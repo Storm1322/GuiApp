@@ -7,7 +7,7 @@ import java.awt.event.*;
 class GameApp extends JFrame implements ActionListener{
     static JFrame frame = new JFrame("Tennis Simulation");
     static JButton yesButton, noButton, exitButton, addPlayerButton, addCityButton, addTournamentButton, continueButton, returnButton, deletePlayerButton, deleteCityButton, deleteTournamentButton, beginTournamentButton, seeSavedData;
-    static JLabel playerNameL, playerSurnameL, playerAgeL, playerOriginL, playerGenderL, invalidInput, areYouSure, playerDataL, cityDataL, tournamentDataL, cityL, tournamentL, playerCountL, notEnough, tournamentPlayersL, playerOneL, playerTwoL, dashL;
+    static JLabel playerNameL, playerSurnameL, playerAgeL, playerOriginL, playerGenderL, invalidInput, areYouSure, playerDataL, cityDataL, tournamentDataL, cityL, tournamentL, playerCountL, notEnough, tournamentPlayersL, playerOneL, playerTwoL, dashL, playerOneScoreL, playerTwoScoreL;
     static JTextField playerNameTF, playerSurnameTF, playerAgeTF, playerOriginTF, playerGenderTF, tournamentTF, cityTF, playerCountTF, playerOneScoreTF, playerTwoScoreTF;
     static JTextArea playerDisplayTA, cityDisplayTA, tournamentDisplayTA;
     static JScrollPane playerDisplaySP, cityDisplaySP, tournamentDisplaySP;
@@ -82,8 +82,10 @@ class GameApp extends JFrame implements ActionListener{
         playerCountTF.addActionListener(new Tournament());
         playerOneScoreTF = new JTextField();
         playerOneScoreTF.setBounds(300, 200, 200, 25);
+        playerOneScoreTF.addActionListener(new Simulation());
         playerTwoScoreTF = new JTextField();
         playerTwoScoreTF.setBounds(300, 200, 200, 25);
+        playerTwoScoreTF.addActionListener(new Simulation());
         
 //        Kullanilan Labellar.
         playerNameL = new JLabel("Player Name:");
@@ -115,13 +117,17 @@ class GameApp extends JFrame implements ActionListener{
         notEnough = new JLabel("Not enough players saved for set number.");
         notEnough.setBounds(275, 350, 250, 25);
         tournamentPlayersL = new JLabel();
-        tournamentPlayersL.setBounds(150, 100, 500, 25);
+        tournamentPlayersL.setBounds(100, 100, 600, 25);
         playerOneL = new JLabel();
         playerOneL.setBounds(225, 300, 150, 25);
         playerTwoL = new JLabel();
         playerTwoL.setBounds(475, 300, 150, 25);
         dashL = new JLabel("---");
         dashL.setBounds(398, 300, 25, 25);
+        playerOneScoreL = new JLabel();
+        playerOneScoreL.setBounds(275, 150, 250, 25);
+        playerTwoScoreL = new JLabel();
+        playerTwoScoreL.setBounds(275, 150, 250, 25);
         
 //        Kullanilan scroll paneler.
         playerDisplayTA = new JTextArea(200,40);
@@ -192,6 +198,8 @@ class GameApp extends JFrame implements ActionListener{
         frame.add(dashL);
         frame.add(playerOneScoreTF);
         frame.add(playerTwoScoreTF);
+        frame.add(playerOneScoreL);
+        frame.add(playerTwoScoreL);
         
         returnToMenu();
         
@@ -359,6 +367,8 @@ class GameApp extends JFrame implements ActionListener{
         dashL.setVisible(false);
         playerOneScoreTF.setVisible(false);
         playerTwoScoreTF.setVisible(false);
+        playerOneScoreL.setVisible(false);
+        playerTwoScoreL.setVisible(false);
         addPlayerButton.setVisible(true);
         addCityButton.setVisible(true);
         addTournamentButton.setVisible(true);
