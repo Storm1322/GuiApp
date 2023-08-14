@@ -117,19 +117,22 @@ public class Simulation implements ActionListener{
     }
     
     private static void scoreCheck(){
-        String firstPlayer = currentPlayersObjects.get(0).name + " " + currentPlayersObjects.get(0).surname;
-        String secondPlayer = currentPlayersObjects.get(1).name + " " + currentPlayersObjects.get(1).surname;
 //            Izin verilmeyen skorlar icin check ve tekrar girdi iste.
             if (playerOneScore != 60 && playerTwoScore != 60) {
+                GameApp.invalidInput.setVisible(true);
                 scoreEntry();
             } else if (playerOneScore == 60 && playerTwoScore == 60) {
+                GameApp.invalidInput.setVisible(true);
                 scoreEntry();
             } else if (playerTwoScore != 0 && playerTwoScore != 15 && playerTwoScore != 30 && playerTwoScore != 45 && playerOneScore == 60) {
+                GameApp.invalidInput.setVisible(true);
                 scoreEntry();
             } else if (playerOneScore != 0 && playerOneScore != 15 && playerOneScore != 30 && playerOneScore != 45 && playerTwoScore == 60) {
+                GameApp.invalidInput.setVisible(true);
                 scoreEntry();
 //            Skorlara gore kazanani belirle.
             } else {
+                GameApp.invalidInput.setVisible(false);
                 switch (playerOneScore) {
                     case 0:
                         playerTwoSetScore++;
@@ -186,12 +189,13 @@ public class Simulation implements ActionListener{
             GameApp.dashL.setVisible(true);
             GameApp.tournamentPlayersL.setVisible(false);
             GameApp.continueButton.setVisible(false);
-            showMessageDialog(null, "Starting tournament simulation.\n You are expected to enter set scores for both players. \n Enter 60 for player and either 45, 30, 15 or 0 for the other. \n First player to 4 sets wins.");
+            showMessageDialog(null, "Starting tournament simulation.\n You are expected to enter set scores for both players. \n Enter 60 for one player and either 45, 30, 15 or 0 for the other. \n First player to 4 sets wins.");
             scoreEntry();
         }else if(e.getSource() == GameApp.playerOneScoreTF){
             if(GameApp.checkInput(GameApp.playerOneScoreTF.getText()) == false){
                 playerOneScore = Integer.parseInt(GameApp.playerOneScoreTF.getText());
                 GameApp.playerOneScoreTF.setVisible(false);
+                GameApp.playerOneScoreTF.removeAll();
                 GameApp.playerOneScoreL.setVisible(false);
                 playerTwoScoreEntry();
             }else{
@@ -201,6 +205,7 @@ public class Simulation implements ActionListener{
             if(GameApp.checkInput(GameApp.playerTwoScoreTF.getText()) == false){
                 playerTwoScore = Integer.parseInt(GameApp.playerTwoScoreTF.getText());
                 GameApp.playerTwoScoreTF.setVisible(false);
+                GameApp.playerTwoScoreTF.removeAll();
                 GameApp.playerTwoScoreL.setVisible(false);
                 scoreCheck();
             }else{
