@@ -17,6 +17,8 @@ public class Simulation implements ActionListener{
     public static List<Player> playingPlayersObjects = new ArrayList<>();
     public static List<Player> currentPlayersObjects = new ArrayList<>();
     public static List<Player> nextRoundObjects = new ArrayList<>();
+    public static int firstPlayerIndex;
+    public static int secondPlayerIndex;
     public static int matchCount = 0;
     public static int roundCount = 1;
     static int playerOneSetScore = 0;
@@ -39,43 +41,85 @@ public class Simulation implements ActionListener{
                 i++;
             }
         }
-        simulateTournament();
+        beginTournament();
+    }
+    
+    public static void beginTournament(){
+        playingPlayers.clear();
+            for(Player player: playingPlayersObjects){
+                playingPlayers.add(player.name + " " + player.surname);
+            }
+        GameApp.tournamentPlayersL.setText("Players of this tournament are: " + playingPlayers);
+        GameApp.tournamentPlayersL.setVisible(true);
+        GameApp.continueButton.setVisible(true);
     }
     
 //    Turnuvayi simule eden method.
     public static void simulateTournament(){
 //        Tek oyuncu kalinca kazanan olarak printle.
         if (playingPlayersObjects.size() == 1) {
+            GameApp.tournamentWinnerL.setText("Winner of the tournament is: " + playingPlayersObjects.get(0).name + " " + playingPlayersObjects.get(0).surname);
+            GameApp.tournamentWinnerL.setVisible(true);
+            GameApp.current = "tournament over";
             startAgain();
+        //        Rounddaki tum maclar bitince sonraki rounda gec.
+        }else if (matchCount == Tournament.tournamentPlayerCount / Math.pow(2, roundCount)) {
+            roundCount++;
+            matchCount = 0;
+            playingPlayersObjects.addAll(nextRoundObjects);
+            if(playingPlayersObjects.size() == 1) {
+            } else {
+                playingPlayers.clear();
+                for(Player player: playingPlayersObjects){
+                    playingPlayers.add(player.name + " " + player.surname);
+                }
+            }
+            nextRoundObjects.clear();
+            GameApp.current = "moving to next round";
+            playingPlayers.clear();
+            for(Player player: playingPlayersObjects){
+                playingPlayers.add(player.name + " " + player.surname);
+            }
+            if(playingPlayers.size() > 1){
+                GameApp.tournamentPlayersL.setText("Players of this round are: " + playingPlayers);
+                GameApp.tournamentPlayersL.setVisible(true);
+                GameApp.continueButton.setVisible(true);
+            }
+        }else if(GameApp.current == "simulating tournament" || GameApp.current == "tournament info display"){
+            matchCount++;
+//            Rastgele 2 oyuncuyu eslestir.
+            Random rand = new Random();
+            firstPlayerIndex = rand.nextInt(playingPlayersObjects.size());
+            secondPlayerIndex = rand.nextInt(playingPlayersObjects.size());
+//            Iki random index birbirine esitse 2. indexten 1 cikar veya ekle.
+            if (firstPlayerIndex == secondPlayerIndex && firstPlayerIndex > 0) {
+                secondPlayerIndex = secondPlayerIndex - 1;
+            } else if (firstPlayerIndex == secondPlayerIndex && firstPlayerIndex == 0) {
+                secondPlayerIndex = secondPlayerIndex + 1;
+            }
+            currentPlayersObjects.add(playingPlayersObjects.get(firstPlayerIndex));
+            currentPlayersObjects.add(playingPlayersObjects.get(secondPlayerIndex));
+            
+            GameApp.playerOneL.setText(currentPlayersObjects.get(0).name + " " + currentPlayersObjects.get(0).surname + "    " + playerOneSetScore);
+            GameApp.playerTwoL.setText(playerTwoSetScore + "    " + currentPlayersObjects.get(1).name + " " + currentPlayersObjects.get(1).surname);
+            GameApp.playerOneL.setVisible(true);
+            GameApp.playerTwoL.setVisible(true);
+
+            playerOneSetScore = 0;
+            playerTwoSetScore = 0;
+            scoreEntry();
+            }
         }
-        matchCount++;
-//        Rastgele 2 oyuncuyu eslestir.
-        Random rand = new Random();
-        int firstPlayerIndex = rand.nextInt(playingPlayersObjects.size());
-        int secondPlayerIndex = rand.nextInt(playingPlayersObjects.size());
-//        Iki random index birbirine esitse 2. indexten 1 cikar veya ekle.
-        if (firstPlayerIndex == secondPlayerIndex && firstPlayerIndex > 0) {
-            secondPlayerIndex = secondPlayerIndex - 1;
-        } else if (firstPlayerIndex == secondPlayerIndex && firstPlayerIndex == 0) {
-            secondPlayerIndex = secondPlayerIndex + 1;
-        }
-        currentPlayersObjects.add(playingPlayersObjects.get(firstPlayerIndex));
-        currentPlayersObjects.add(playingPlayersObjects.get(secondPlayerIndex));
-        
-        playerOneSetScore = 0;
-        playerTwoSetScore = 0;
-        
-        playingPlayers.clear();
-        for(Player player: playingPlayersObjects){
-            playingPlayers.add(player.name + " " + player.surname);
-        }
-        tournamentInfoDisplay();
-    }
     
-    public static void tournamentInfoDisplay(){
-        GameApp.tournamentPlayersL.setText("Players of this round are: " + playingPlayers);
-        GameApp.tournamentPlayersL.setVisible(true);
-        GameApp.continueButton.setVisible(true);
+    public static void removePlayedPlayers(){
+//        Indexi buyuk olan playeri once sil.
+        if (firstPlayerIndex > secondPlayerIndex) {
+            playingPlayersObjects.remove(firstPlayerIndex);
+            playingPlayersObjects.remove(secondPlayerIndex);
+        } else {
+            playingPlayersObjects.remove(secondPlayerIndex);
+            playingPlayersObjects.remove(firstPlayerIndex);
+        }
     }
     
 //    Userdan skor girdisi istemek icin method.
@@ -85,14 +129,22 @@ public class Simulation implements ActionListener{
             currentPlayersObjects.get(0).matchesWon++;
             nextRoundObjects.add(currentPlayersObjects.get(0));
             currentPlayersObjects.clear();
+            GameApp.playerOneL.setVisible(false);
+            GameApp.playerTwoL.setVisible(false);
+            GameApp.dashL.setVisible(false);
             Player.storePlayers();
+            removePlayedPlayers();
             simulateTournament();
         } else if (playerTwoSetScore == 4) {
             int winnerInt = playingPlayersObjects.indexOf(currentPlayersObjects.get(1));
             playingPlayersObjects.get(winnerInt).matchesWon++;
             nextRoundObjects.add(currentPlayersObjects.get(1));
             currentPlayersObjects.clear();
+            GameApp.playerOneL.setVisible(false);
+            GameApp.playerTwoL.setVisible(false);
+            GameApp.dashL.setVisible(false);
             Player.storePlayers();
+            removePlayedPlayers();
             simulateTournament();
         } else {
             playerOneScoreEntry();
@@ -176,38 +228,53 @@ public class Simulation implements ActionListener{
     
 //    Yeniden baslatmak icin method.
     public static void startAgain(){
-        
+        GameApp.current = "start again";
+        GameApp.yesButton.setVisible(true);
+        GameApp.noButton.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == GameApp.continueButton){
-            GameApp.playerOneL.setText(currentPlayersObjects.get(0).name + " " + currentPlayersObjects.get(0).surname + "    " + playerOneSetScore);
-            GameApp.playerTwoL.setText(playerTwoSetScore + "    " + currentPlayersObjects.get(1).name + " " + currentPlayersObjects.get(1).surname);
-            GameApp.playerOneL.setVisible(true);
-            GameApp.playerTwoL.setVisible(true);
-            GameApp.dashL.setVisible(true);
+        if(GameApp.current == "tournament info display"){
+            if(e.getSource() == GameApp.continueButton){
+                GameApp.dashL.setVisible(true);
+                GameApp.tournamentPlayersL.setVisible(false);
+                GameApp.continueButton.setVisible(false);
+                showMessageDialog(null, "Starting tournament simulation.\n You are expected to enter set scores for both players. \n Enter 60 for one player and either 45, 30, 15 or 0 for the other. \n First player to 4 sets wins.");
+                GameApp.current = "simulating tournament";
+                simulateTournament();
+            }
+        }else if(GameApp.current == "moving to next round"){
+            GameApp.current = "simulating tournament";
             GameApp.tournamentPlayersL.setVisible(false);
-            GameApp.continueButton.setVisible(false);
-            showMessageDialog(null, "Starting tournament simulation.\n You are expected to enter set scores for both players. \n Enter 60 for one player and either 45, 30, 15 or 0 for the other. \n First player to 4 sets wins.");
-            scoreEntry();
+            simulateTournament();
         }else if(e.getSource() == GameApp.playerOneScoreTF){
             if(GameApp.checkInput(GameApp.playerOneScoreTF.getText()) == false){
                 playerOneScore = Integer.parseInt(GameApp.playerOneScoreTF.getText());
-                GameApp.playerOneScoreTF.setVisible(false);
-                GameApp.playerOneScoreTF.removeAll();
-                GameApp.playerOneScoreL.setVisible(false);
-                playerTwoScoreEntry();
+                if(playerOneScore != 60 && playerOneScore != 45 && playerOneScore != 30 && playerOneScore != 15 && playerOneScore != 0){
+                    GameApp.invalidInput.setVisible(true);
+                }else{
+                    GameApp.playerOneScoreTF.setVisible(false);
+                    GameApp.playerOneScoreTF.removeAll();
+                    GameApp.playerOneScoreL.setVisible(false);
+                    GameApp.invalidInput.setVisible(false);
+                    playerTwoScoreEntry();
+                }
             }else{
                 GameApp.invalidInput.setVisible(true);
             }
         }else if(e.getSource() == GameApp.playerTwoScoreTF){
             if(GameApp.checkInput(GameApp.playerTwoScoreTF.getText()) == false){
                 playerTwoScore = Integer.parseInt(GameApp.playerTwoScoreTF.getText());
-                GameApp.playerTwoScoreTF.setVisible(false);
-                GameApp.playerTwoScoreTF.removeAll();
-                GameApp.playerTwoScoreL.setVisible(false);
-                scoreCheck();
+                if(playerTwoScore != 60 && playerTwoScore != 45 && playerTwoScore != 30 && playerTwoScore != 15 && playerTwoScore != 0){
+                    GameApp.invalidInput.setVisible(true);
+                }else{
+                    GameApp.playerTwoScoreTF.setVisible(false);
+                    GameApp.playerTwoScoreTF.removeAll();
+                    GameApp.playerTwoScoreL.setVisible(false);
+                    GameApp.invalidInput.setVisible(false);
+                    scoreCheck();
+                }
             }else{
                 GameApp.invalidInput.setVisible(true);
             }

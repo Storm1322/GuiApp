@@ -61,16 +61,19 @@ public class City implements ActionListener{
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {    
-        if(checkInputForString(cityTF.getText()) == false){
-            City.cities.add(cityTF.getText());
-            City.storeCities();
-            playerDisplayTA.setText(null);
-            cityDisplayTA.setText(null);
-            tournamentDisplayTA.setText(null);
-            dataAlreadyShown = false;
-        }else{
-            invalidInput.setVisible(true);
-        } 
+    public void actionPerformed(ActionEvent e) { 
+        if(GameApp.current == "adding city"){
+            if(checkInputForString(cityTF.getText()) == false){
+                City.cities.add(cityTF.getText());
+                City.storeCities();
+                playerDisplayTA.setText(null);
+                cityDisplayTA.setText(null);
+                tournamentDisplayTA.setText(null);
+                dataAlreadyShown = false;
+                GameApp.returnToMenu();
+            }else{
+                invalidInput.setVisible(true);
+            }   
+        }
     }
 }

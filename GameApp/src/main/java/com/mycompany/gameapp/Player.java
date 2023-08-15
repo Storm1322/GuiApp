@@ -117,21 +117,24 @@ public class Player implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(checkInputForString(playerNameTF.getText()) == false && checkInputForString(playerSurnameTF.getText()) == false && checkInput(playerAgeTF.getText()) == false && checkInputForString(playerOriginTF.getText()) == false && checkInputForString(playerGenderTF.getText()) == false){
-            playerName = playerNameTF.getText();
-            playerSurname = playerSurnameTF.getText();
-            playerAge = playerAgeTF.getText();
-            playerOrigin = playerOriginTF.getText();
-            playerGender = playerGenderTF.getText();
-            Player player = new Player(playerName, playerSurname, playerAge, playerOrigin, playerGender);
-            players.add(player);
-            storePlayers();
-            GameApp.playerDisplayTA.setText(null);
-            GameApp.cityDisplayTA.setText(null);
-            GameApp.tournamentDisplayTA.setText(null);
-            GameApp.dataAlreadyShown = false;
-        }else{
-            GameApp.invalidInput.setVisible(true);
+        if(GameApp.current == "adding player"){
+            if(checkInputForString(playerNameTF.getText()) == false && checkInputForString(playerSurnameTF.getText()) == false && checkInput(playerAgeTF.getText()) == false && checkInputForString(playerOriginTF.getText()) == false && checkInputForString(playerGenderTF.getText()) == false){
+                playerName = playerNameTF.getText();
+                playerSurname = playerSurnameTF.getText();
+                playerAge = playerAgeTF.getText();
+                playerOrigin = playerOriginTF.getText();
+                playerGender = playerGenderTF.getText();
+                Player player = new Player(playerName, playerSurname, playerAge, playerOrigin, playerGender);
+                players.add(player);
+                storePlayers();
+                GameApp.playerDisplayTA.setText(null);
+                GameApp.cityDisplayTA.setText(null);
+                GameApp.tournamentDisplayTA.setText(null);
+                GameApp.dataAlreadyShown = false;
+                GameApp.returnToMenu();
+            }else{
+                GameApp.invalidInput.setVisible(true);
+            }
         }
     }
 }

@@ -94,6 +94,7 @@ public class Tournament implements ActionListener{
                     cityDisplayTA.setText(null);
                     tournamentDisplayTA.setText(null);
                     dataAlreadyShown = false;
+                    GameApp.returnToMenu();
                 }else{
                     invalidInput.setVisible(true);
                 }

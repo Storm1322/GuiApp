@@ -7,7 +7,7 @@ import java.awt.event.*;
 class GameApp extends JFrame implements ActionListener{
     static JFrame frame = new JFrame("Tennis Simulation");
     static JButton yesButton, noButton, exitButton, addPlayerButton, addCityButton, addTournamentButton, continueButton, returnButton, deletePlayerButton, deleteCityButton, deleteTournamentButton, beginTournamentButton, seeSavedData;
-    static JLabel playerNameL, playerSurnameL, playerAgeL, playerOriginL, playerGenderL, invalidInput, areYouSure, playerDataL, cityDataL, tournamentDataL, cityL, tournamentL, playerCountL, notEnough, tournamentPlayersL, playerOneL, playerTwoL, dashL, playerOneScoreL, playerTwoScoreL;
+    static JLabel playerNameL, playerSurnameL, playerAgeL, playerOriginL, playerGenderL, invalidInput, areYouSure, playerDataL, cityDataL, tournamentDataL, cityL, tournamentL, playerCountL, notEnough, tournamentPlayersL, playerOneL, playerTwoL, dashL, playerOneScoreL, playerTwoScoreL, tournamentWinnerL;
     static JTextField playerNameTF, playerSurnameTF, playerAgeTF, playerOriginTF, playerGenderTF, tournamentTF, cityTF, playerCountTF, playerOneScoreTF, playerTwoScoreTF;
     static JTextArea playerDisplayTA, cityDisplayTA, tournamentDisplayTA;
     static JScrollPane playerDisplaySP, cityDisplaySP, tournamentDisplaySP;
@@ -128,6 +128,8 @@ class GameApp extends JFrame implements ActionListener{
         playerOneScoreL.setBounds(275, 150, 250, 25);
         playerTwoScoreL = new JLabel();
         playerTwoScoreL.setBounds(275, 150, 250, 25);
+        tournamentWinnerL = new JLabel();
+        tournamentWinnerL.setBounds(275, 250, 250, 50);
         
 //        Kullanilan scroll paneler.
         playerDisplayTA = new JTextArea(200,40);
@@ -206,6 +208,7 @@ class GameApp extends JFrame implements ActionListener{
         frame.setSize(800, 600);
         frame.setLayout(null);
         frame.setVisible(true);
+        frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
@@ -261,22 +264,27 @@ class GameApp extends JFrame implements ActionListener{
         if(e.getSource() == exitButton){
             System.exit(0);
         }else{
-            exitMenu();
             if(e.getSource() == addPlayerButton){
+                exitMenu();
                 current = "adding player";
                 Player.registerPlayers();
             }else if(e.getSource() == addCityButton){
+                exitMenu();
                 current = "adding city";
                 City.addCity();
             }else if(e.getSource() == addTournamentButton){
+                exitMenu();
                 current = "adding tournament";
                 Tournament.addTournament();
             }else if(e.getSource() == seeSavedData){
+                exitMenu();
                 showSaved();
             }else if(e.getSource() == beginTournamentButton){
+                exitMenu();
                 current = "begin tournament";
                 Tournament.setPlayerCount();
             }else if(e.getSource() == deletePlayerButton || e.getSource() == deleteCityButton || e.getSource() == deleteTournamentButton){
+                exitMenu();
                 yesButton.setVisible(true);
                 noButton.setVisible(true);
                 areYouSure.setVisible(true);
@@ -287,11 +295,6 @@ class GameApp extends JFrame implements ActionListener{
                 }else if(e.getSource() == deleteTournamentButton){
                     current = "delete tournaments";
                 }
-            }
-        }
-        if(e.getSource() == continueButton){
-            if(current == "adding player" || current == "adding city" || current == "adding tournament"){
-                returnToMenu();
             }
         }
         if(e.getSource() == yesButton){
