@@ -61,7 +61,6 @@ public class Simulation implements ActionListener{
             GameApp.tournamentWinnerL.setText("Winner of the tournament is: " + playingPlayersObjects.get(0).name + " " + playingPlayersObjects.get(0).surname);
             GameApp.tournamentWinnerL.setVisible(true);
             GameApp.current = "tournament over";
-            startAgain();
         //        Rounddaki tum maclar bitince sonraki rounda gec.
         }else if (matchCount == Tournament.tournamentPlayerCount / Math.pow(2, roundCount)) {
             roundCount++;

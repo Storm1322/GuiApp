@@ -202,6 +202,7 @@ class GameApp extends JFrame implements ActionListener{
         frame.add(playerTwoScoreTF);
         frame.add(playerOneScoreL);
         frame.add(playerTwoScoreL);
+        frame.add(tournamentWinnerL);
         
         returnToMenu();
         
@@ -380,5 +381,6 @@ class GameApp extends JFrame implements ActionListener{
         deleteTournamentButton.setVisible(true);
         beginTournamentButton.setVisible(true);
         seeSavedData.setVisible(true);
+        tournamentWinnerL.setVisible(false);
     }
 }
