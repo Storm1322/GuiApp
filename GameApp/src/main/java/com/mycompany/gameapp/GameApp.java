@@ -3,6 +3,7 @@ package com.mycompany.gameapp;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import static javax.swing.JOptionPane.showMessageDialog;
 
 class GameApp extends JFrame implements ActionListener{
     static JFrame frame = new JFrame("Tennis Simulation");
@@ -11,7 +12,7 @@ class GameApp extends JFrame implements ActionListener{
     static JTextField playerNameTF, playerSurnameTF, playerAgeTF, playerOriginTF, playerGenderTF, tournamentTF, cityTF, playerCountTF, playerOneScoreTF, playerTwoScoreTF;
     static JTextArea playerDisplayTA, cityDisplayTA, tournamentDisplayTA;
     static JScrollPane playerDisplaySP, cityDisplaySP, tournamentDisplaySP;
-    static JTable matchScores;
+    static JTable showPlayers, matchScores;
     static boolean dataAlreadyShown = false;
     static String current;
     
@@ -129,7 +130,7 @@ class GameApp extends JFrame implements ActionListener{
         playerTwoScoreL = new JLabel();
         playerTwoScoreL.setBounds(275, 150, 250, 25);
         tournamentWinnerL = new JLabel();
-        tournamentWinnerL.setBounds(275, 250, 250, 50);
+        tournamentWinnerL.setHorizontalAlignment(JLabel.CENTER);
         
 //        Kullanilan scroll paneler.
         playerDisplayTA = new JTextArea(200,40);
@@ -150,6 +151,9 @@ class GameApp extends JFrame implements ActionListener{
         tournamentDisplaySP = new JScrollPane(cityDisplayTA);
         tournamentDisplaySP.createVerticalScrollBar();
         tournamentDisplaySP.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        
+//        Kullanilan table'lar
+        showPlayers = new JTable();
         
         
 //        Tum componentleri frame'e ekle.
@@ -310,6 +314,7 @@ class GameApp extends JFrame implements ActionListener{
             }else if(current == "delete tournament"){
                 Tournament.deleteTournaments();
             }
+            showMessageDialog(null, "The deletion process was successful.");
             returnToMenu();
         }else if(e.getSource() == noButton){
             returnToMenu();

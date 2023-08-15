@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static javax.swing.JOptionPane.showMessageDialog;
 
 public class City implements ActionListener{
     
@@ -70,6 +71,7 @@ public class City implements ActionListener{
                 cityDisplayTA.setText(null);
                 tournamentDisplayTA.setText(null);
                 dataAlreadyShown = false;
+                showMessageDialog(null, "Successfully added a city.");
                 GameApp.returnToMenu();
             }else{
                 invalidInput.setVisible(true);

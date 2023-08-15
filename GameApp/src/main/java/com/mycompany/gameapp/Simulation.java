@@ -99,13 +99,13 @@ public class Simulation implements ActionListener{
             currentPlayersObjects.add(playingPlayersObjects.get(firstPlayerIndex));
             currentPlayersObjects.add(playingPlayersObjects.get(secondPlayerIndex));
             
+            playerOneSetScore = 0;
+            playerTwoSetScore = 0;
+            
             GameApp.playerOneL.setText(currentPlayersObjects.get(0).name + " " + currentPlayersObjects.get(0).surname + "    " + playerOneSetScore);
             GameApp.playerTwoL.setText(playerTwoSetScore + "    " + currentPlayersObjects.get(1).name + " " + currentPlayersObjects.get(1).surname);
             GameApp.playerOneL.setVisible(true);
             GameApp.playerTwoL.setVisible(true);
-
-            playerOneSetScore = 0;
-            playerTwoSetScore = 0;
             scoreEntry();
             }
         }
@@ -130,7 +130,6 @@ public class Simulation implements ActionListener{
             currentPlayersObjects.clear();
             GameApp.playerOneL.setVisible(false);
             GameApp.playerTwoL.setVisible(false);
-            GameApp.dashL.setVisible(false);
             Player.storePlayers();
             removePlayedPlayers();
             simulateTournament();
@@ -141,7 +140,6 @@ public class Simulation implements ActionListener{
             currentPlayersObjects.clear();
             GameApp.playerOneL.setVisible(false);
             GameApp.playerTwoL.setVisible(false);
-            GameApp.dashL.setVisible(false);
             Player.storePlayers();
             removePlayedPlayers();
             simulateTournament();
