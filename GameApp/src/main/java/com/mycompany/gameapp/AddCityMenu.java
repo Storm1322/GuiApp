@@ -6,13 +6,14 @@ import java.awt.event.*;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class AddCityMenu extends JFrame implements ActionListener{
-    static JFrame addCityMenu = new JFrame("Tennis Tournament");
+    static JFrame addCityMenu;
     static JButton returnButton;
     static JTextField cityNameTF;
     static JLabel addData, cityNameL, invalidName;
     
     
     public AddCityMenu(){
+        addCityMenu = new JFrame("Tennis Tournament");
         
         initializeButtons();
         

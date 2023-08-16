@@ -6,12 +6,13 @@ import java.awt.event.*;
 import javax.swing.table.DefaultTableModel;
 
 public class ShowPlayerData extends JFrame implements ActionListener{
-    static JFrame showPlayerDataMenu = new JFrame("Tennis Tournament");
+    static JFrame showPlayerDataMenu;
     static JTable playerDisplay;
     static JButton returnButton;
     static JScrollPane playerDisplayPane;
     
     public ShowPlayerData(){
+        showPlayerDataMenu = new JFrame("Tennis Tournament");
         
         initializeButtons();
         
@@ -46,19 +47,20 @@ public class ShowPlayerData extends JFrame implements ActionListener{
         playerDisplay = new JTable(Player.array,Player.playerTable);
         playerDisplay.setBounds(100, 50, 600, 350);
         playerDisplayPane = new JScrollPane(playerDisplay);
+       
         
-        /*
         //instance table model
-        DefaultTableModel tableModel = new DefaultTableModel() {
+        DefaultTableModel tableModel = new DefaultTableModel(Player.array, Player.playerTable) {
 
             @Override
             public boolean isCellEditable(int row, int column) {
-              //all cells false
-            return false;
+                //all cells false
+                return false;
             }
         };
         playerDisplay.setModel(tableModel);
-        */
+
+        playerDisplay.setModel(tableModel);
     }
     
     public static void returnToMenu(){

@@ -5,10 +5,11 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class MainMenu extends JFrame implements ActionListener{
-    static JFrame mainMenu = new JFrame("Tennis Tournament");
+    static JFrame mainMenu;
     static JButton addPlayerButton, addCityButton, addTournamentButton, deletePlayerButton, deleteCityButton, deleteTournamentButton, beginTournamentButton, seeSavedData;
     
     public MainMenu(){
+        mainMenu = new JFrame("Tennis Tournament");
         
         initializeButtons();
         

@@ -5,11 +5,12 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class SavedDataMenu extends JFrame implements ActionListener{
-    static JFrame savedDataMenu = new JFrame("Tennis Tournament");
+    static JFrame savedDataMenu;
     static JButton player, city, tournament, returnButton;
     static JLabel seeWhich;
 
     public SavedDataMenu(){
+        savedDataMenu = new JFrame("Tennis Tournament");
         
         initializeButtons();
         
@@ -68,7 +69,8 @@ public class SavedDataMenu extends JFrame implements ActionListener{
     }
     
     public static void showCityData(){
-        
+        new ShowCityData();
+        savedDataMenu.dispose();
     }
     
     public static void showTournamentData(){

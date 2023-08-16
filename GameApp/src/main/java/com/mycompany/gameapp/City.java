@@ -23,6 +23,8 @@ import static javax.swing.JOptionPane.showMessageDialog;
 public class City implements ActionListener{
     
     public static List<String> cities = new ArrayList<>();
+    public static String[][] cityArray;
+    public static String[] cityHeadline = {"City Name"};;
     
     public static void showCities(){
         for(String city: cities){
@@ -45,6 +47,15 @@ public class City implements ActionListener{
         Path file = Paths.get("Cities.txt");
         try{
             cities = Files.readAllLines(file);
+            
+            cityArray = new String[cities.size()][1];
+            int i = 0;
+            for(String city: cities){
+                String[] array = new String[1];
+                array[0] = city;
+                cityArray[i++] = array;
+                System.out.println(cityArray);
+            }
            }catch (IOException ex){
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -62,20 +73,6 @@ public class City implements ActionListener{
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) { 
-        if(GameApp.current == "adding city"){
-            if(checkInputForString(cityTF.getText()) == false){
-                City.cities.add(cityTF.getText());
-                City.storeCities();
-                playerDisplayTA.setText(null);
-                cityDisplayTA.setText(null);
-                tournamentDisplayTA.setText(null);
-                dataAlreadyShown = false;
-                showMessageDialog(null, "Successfully added a city.");
-                GameApp.returnToMenu();
-            }else{
-                invalidInput.setVisible(true);
-            }   
-        }
+    public void actionPerformed(ActionEvent e) {
     }
 }

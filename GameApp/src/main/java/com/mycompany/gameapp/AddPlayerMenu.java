@@ -6,12 +6,13 @@ import java.awt.event.*;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class AddPlayerMenu extends JFrame implements ActionListener{
-    static JFrame addPlayerMenu = new JFrame("Tennis Tournament");
+    static JFrame addPlayerMenu;
     static JTextField playerNameTF, playerSurnameTF, playerAgeTF, playerOriginTF, playerGenderTF;
     static JButton returnButton;
     static JLabel addData, invalidName, invalidSurname, invalidAge, invalidOrigin, invalidGender, playerNameL, playerSurnameL, playerAgeL, playerOriginL, playerGenderL;
 
     public AddPlayerMenu(){
+        addPlayerMenu = new JFrame("Tennis Tournament");
         
         initializeButtons();
         
