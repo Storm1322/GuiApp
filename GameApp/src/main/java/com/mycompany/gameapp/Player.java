@@ -17,6 +17,11 @@ import static com.mycompany.gameapp.GameApp.playerOriginTF;
 import static com.mycompany.gameapp.GameApp.playerSurnameTF;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Array;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import static javax.swing.JOptionPane.showMessageDialog;
 
 public class Player implements ActionListener{
     public String name;
@@ -40,6 +45,8 @@ public class Player implements ActionListener{
     
     public static List<Player> players = new ArrayList<>();
     public static final File file = new File("Player.json");
+    public static List<ArrayList<String>> playerArray = new ArrayList<>();
+    public static ArrayList<String> playerStatArray = new ArrayList<>();
     public static String playerName;
     public static String playerSurname;
     public static String playerAge;
@@ -75,10 +82,22 @@ public class Player implements ActionListener{
                 Path f = Paths.get("Player.json");
                 Files.createFile(f);
             }
+            
+            String playerTable[] = {"Name", "Surname", "Age", "Origin", "Gender", "Matches Won"};
+            
             Player[] playersTemp = mapper.readValue(file, Player[].class);
             for (Player playersTemp1 : playersTemp) {
                 players.add(playersTemp1);
+                String matchesWonStr = String.valueOf(playersTemp1.matchesWon);
+                playerStatArray.add(playersTemp1.name);
+                playerStatArray.add(playersTemp1.surname);
+                playerStatArray.add(playersTemp1.age);
+                playerStatArray.add(playersTemp1.origin);
+                playerStatArray.add(playersTemp1.gender);
+                playerStatArray.add(matchesWonStr);
+                playerArray.add(playerStatArray);
             }
+            GameApp.showPlayers = new JTable((Object[][]) playerArray.toArray(), playerTable);
         }catch(IOException ex){
             ex.printStackTrace();
         }
@@ -117,21 +136,25 @@ public class Player implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(checkInputForString(playerNameTF.getText()) == false && checkInputForString(playerSurnameTF.getText()) == false && checkInput(playerAgeTF.getText()) == false && checkInputForString(playerOriginTF.getText()) == false && checkInputForString(playerGenderTF.getText()) == false){
-            playerName = playerNameTF.getText();
-            playerSurname = playerSurnameTF.getText();
-            playerAge = playerAgeTF.getText();
-            playerOrigin = playerOriginTF.getText();
-            playerGender = playerGenderTF.getText();
-            Player player = new Player(playerName, playerSurname, playerAge, playerOrigin, playerGender);
-            players.add(player);
-            storePlayers();
-            GameApp.playerDisplayTA.setText(null);
-            GameApp.cityDisplayTA.setText(null);
-            GameApp.tournamentDisplayTA.setText(null);
-            GameApp.dataAlreadyShown = false;
-        }else{
-            GameApp.invalidInput.setVisible(true);
+        if(GameApp.current == "adding player"){
+            if(checkInputForString(playerNameTF.getText()) == false && checkInputForString(playerSurnameTF.getText()) == false && checkInput(playerAgeTF.getText()) == false && checkInputForString(playerOriginTF.getText()) == false && checkInputForString(playerGenderTF.getText()) == false){
+                playerName = playerNameTF.getText();
+                playerSurname = playerSurnameTF.getText();
+                playerAge = playerAgeTF.getText();
+                playerOrigin = playerOriginTF.getText();
+                playerGender = playerGenderTF.getText();
+                Player player = new Player(playerName, playerSurname, playerAge, playerOrigin, playerGender);
+                players.add(player);
+                storePlayers();
+                GameApp.playerDisplayTA.setText(null);
+                GameApp.cityDisplayTA.setText(null);
+                GameApp.tournamentDisplayTA.setText(null);
+                GameApp.dataAlreadyShown = false;
+                showMessageDialog(null, "Successfully added a player.");
+                GameApp.returnToMenu();
+            }else{
+                GameApp.invalidInput.setVisible(true);
+            }
         }
     }
 }

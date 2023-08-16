@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static javax.swing.JOptionPane.showMessageDialog;
 
 public class Tournament implements ActionListener{
     
@@ -94,6 +95,8 @@ public class Tournament implements ActionListener{
                     cityDisplayTA.setText(null);
                     tournamentDisplayTA.setText(null);
                     dataAlreadyShown = false;
+                    showMessageDialog(null, "Successfully added a tournament.");
+                    GameApp.returnToMenu();
                 }else{
                     invalidInput.setVisible(true);
                 }
