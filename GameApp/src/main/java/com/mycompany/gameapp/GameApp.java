@@ -8,8 +8,8 @@ import static javax.swing.JOptionPane.showMessageDialog;
 class GameApp extends JFrame implements ActionListener{
     static JFrame frame = new JFrame("Tennis Simulation");
     static JButton yesButton, noButton, exitButton, addPlayerButton, addCityButton, addTournamentButton, continueButton, returnButton, deletePlayerButton, deleteCityButton, deleteTournamentButton, beginTournamentButton, seeSavedData;
-    static JLabel playerNameL, playerSurnameL, playerAgeL, playerOriginL, playerGenderL, invalidInput, areYouSure, playerDataL, cityDataL, tournamentDataL, cityL, tournamentL, playerCountL, notEnough, tournamentPlayersL, playerOneL, playerTwoL, dashL, playerOneScoreL, playerTwoScoreL, tournamentWinnerL;
-    static JTextField playerNameTF, playerSurnameTF, playerAgeTF, playerOriginTF, playerGenderTF, tournamentTF, cityTF, playerCountTF, playerOneScoreTF, playerTwoScoreTF;
+    static JLabel invalidInput, areYouSure, playerDataL, cityDataL, tournamentDataL, cityL, tournamentL, playerCountL, notEnough, tournamentPlayersL, playerOneL, playerTwoL, dashL, playerOneScoreL, playerTwoScoreL, tournamentWinnerL;
+    static JTextField tournamentTF, cityTF, playerCountTF, playerOneScoreTF, playerTwoScoreTF;
     static JTextArea playerDisplayTA, cityDisplayTA, tournamentDisplayTA;
     static JScrollPane playerDisplaySP, cityDisplaySP, tournamentDisplaySP;
     static JTable showPlayers, matchScores;
@@ -59,21 +59,8 @@ class GameApp extends JFrame implements ActionListener{
         noButton = new JButton("No");
         noButton.setBounds(450, 400, 150, 50);
         noButton.addActionListener(this);
-        seeSavedData = new JButton("See Saved Data");
-        seeSavedData.setBounds(325, 300, 150, 50);
-        seeSavedData.addActionListener(this);
         
 //        Kullanilan text fieldlar.
-        playerNameTF = new JTextField();
-        playerNameTF.setBounds(300, 50, 200, 25);
-        playerSurnameTF = new JTextField();
-        playerSurnameTF.setBounds(300, 100, 200, 25);
-        playerAgeTF = new JTextField();
-        playerAgeTF.setBounds(300, 150, 200, 25);
-        playerOriginTF = new JTextField();
-        playerOriginTF.setBounds(300, 200, 200, 25);
-        playerGenderTF = new JTextField();
-        playerGenderTF.setBounds(300, 250, 200, 25);
         cityTF = new JTextField();
         cityTF.setBounds(300, 200, 200, 25);
         tournamentTF = new JTextField();
@@ -89,16 +76,6 @@ class GameApp extends JFrame implements ActionListener{
         playerTwoScoreTF.addActionListener(new Simulation());
         
 //        Kullanilan Labellar.
-        playerNameL = new JLabel("Player Name:");
-        playerNameL.setBounds(150,50,125,25);
-        playerSurnameL = new JLabel("Player Surname:");
-        playerSurnameL.setBounds(150,100,125,25);
-        playerAgeL = new JLabel("Player Age:");
-        playerAgeL.setBounds(150,150,125,25);
-        playerOriginL = new JLabel("Player Country:");
-        playerOriginL.setBounds(150,200,125,25);
-        playerGenderL = new JLabel("Player Gender:");
-        playerGenderL.setBounds(150,250,125,25);
         invalidInput = new JLabel("One of the inputs was invalid. Please check again.");
         invalidInput.setBounds(250, 350, 300, 25);
         areYouSure = new JLabel("Are you sure you want to continue?");
@@ -152,36 +129,13 @@ class GameApp extends JFrame implements ActionListener{
         tournamentDisplaySP.createVerticalScrollBar();
         tournamentDisplaySP.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         
-//        Kullanilan table'lar
-        showPlayers = new JTable();
-        
-        
 //        Tum componentleri frame'e ekle.
-        frame.add(exitButton);
-        frame.add(addPlayerButton);
-        frame.add(addCityButton);
-        frame.add(addTournamentButton);
-        frame.add(deletePlayerButton);
-        frame.add(deleteCityButton);
-        frame.add(deleteTournamentButton);
-        frame.add(beginTournamentButton);
-        frame.add(playerNameTF);
-        frame.add(playerSurnameTF);
-        frame.add(playerAgeTF);
-        frame.add(playerOriginTF);
-        frame.add(playerGenderTF);
         frame.add(continueButton);
         frame.add(returnButton);
-        frame.add(playerNameL);
-        frame.add(playerSurnameL);
-        frame.add(playerAgeL);
-        frame.add(playerOriginL);
-        frame.add(playerGenderL);
         frame.add(invalidInput);
         frame.add(yesButton);
         frame.add(noButton);
         frame.add(areYouSure);
-        frame.add(seeSavedData);
         frame.add(playerDataL);
         frame.add(playerDisplayTA);
         frame.add(playerDisplaySP);
@@ -210,9 +164,11 @@ class GameApp extends JFrame implements ActionListener{
         
         returnToMenu();
         
+        new MainMenu();
+        
         frame.setSize(800, 600);
         frame.setLayout(null);
-        frame.setVisible(true);
+        frame.setVisible(false);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -340,16 +296,6 @@ class GameApp extends JFrame implements ActionListener{
     public static void returnToMenu(){
         continueButton.setVisible(false);
         returnButton.setVisible(false);
-        playerNameTF.setVisible(false);
-        playerSurnameTF.setVisible(false);
-        playerAgeTF.setVisible(false);
-        playerOriginTF.setVisible(false);
-        playerGenderTF.setVisible(false);
-        playerNameL.setVisible(false);
-        playerSurnameL.setVisible(false);
-        playerAgeL.setVisible(false);
-        playerOriginL.setVisible(false);
-        playerGenderL.setVisible(false);
         invalidInput.setVisible(false);
         yesButton.setVisible(false);
         noButton.setVisible(false);
@@ -385,7 +331,6 @@ class GameApp extends JFrame implements ActionListener{
         deleteCityButton.setVisible(true);
         deleteTournamentButton.setVisible(true);
         beginTournamentButton.setVisible(true);
-        seeSavedData.setVisible(true);
         tournamentWinnerL.setVisible(false);
     }
 }

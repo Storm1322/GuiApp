@@ -89,12 +89,6 @@ public class Tournament implements ActionListener{
         if(e.getSource() == continueButton){
             if(current == "adding tournament"){
                 if(checkInputForString(tournamentTF.getText()) == false){
-                    Tournament.tournaments.add(tournamentTF.getText());
-                    Tournament.storeTournaments();
-                    playerDisplayTA.setText(null);
-                    cityDisplayTA.setText(null);
-                    tournamentDisplayTA.setText(null);
-                    dataAlreadyShown = false;
                     showMessageDialog(null, "Successfully added a tournament.");
                     GameApp.returnToMenu();
                 }else{
