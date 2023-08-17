@@ -8,7 +8,7 @@ import static javax.swing.JOptionPane.showMessageDialog;
 public class AddPlayerMenu extends JFrame implements ActionListener{
     static JFrame addPlayerMenu;
     static JTextField playerNameTF, playerSurnameTF, playerAgeTF, playerOriginTF, playerGenderTF;
-    static JButton returnButton;
+    static JButton returnButton, saveButton;
     static JLabel addData, invalidName, invalidSurname, invalidAge, invalidOrigin, invalidGender, playerNameL, playerSurnameL, playerAgeL, playerOriginL, playerGenderL;
 
     public AddPlayerMenu(){
@@ -29,6 +29,9 @@ public class AddPlayerMenu extends JFrame implements ActionListener{
         returnButton = new JButton("Return <=");
         returnButton.setBounds(325, 450, 150, 50);
         returnButton.addActionListener(e -> returnToMenu());
+        saveButton = new JButton("Save");
+        saveButton.setBounds(325, 350, 150, 50);
+        saveButton.addActionListener(e -> checkAdd());
     }
     
     public static void initializeLabels(){
@@ -87,6 +90,7 @@ public class AddPlayerMenu extends JFrame implements ActionListener{
         addPlayerMenu.add(playerGenderTF);
         addPlayerMenu.add(addData);
         addPlayerMenu.add(returnButton);
+        addPlayerMenu.add(saveButton);
         addPlayerMenu.add(invalidName);
         addPlayerMenu.add(invalidSurname);
         addPlayerMenu.add(invalidAge);
@@ -182,8 +186,25 @@ public class AddPlayerMenu extends JFrame implements ActionListener{
             Player player = new Player(Player.playerName, Player.playerSurname, Player.playerAge, Player.playerOrigin, Player.playerGender);
             Player.players.add(player);
             Player.storePlayers();
+            Player.importPlayers();
             showMessageDialog(null, "Successfully added a player.");
             returnToMenu();
+        }else{
+            if(playerNameTF.isEnabled() == true){
+                nameInput();
+            }
+            if(playerSurnameTF.isEnabled() == true){
+                surnameInput();
+            }
+            if(playerAgeTF.isEnabled() == true){
+                ageInput();
+            }
+            if(playerOriginTF.isEnabled() == true){
+                originInput();
+            }
+            if(playerGenderTF.isEnabled() == true){
+                genderInput();
+            }
         }
     }
     

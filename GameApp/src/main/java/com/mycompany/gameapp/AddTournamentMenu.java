@@ -7,7 +7,7 @@ import static javax.swing.JOptionPane.showMessageDialog;
 
 public class AddTournamentMenu extends JFrame implements ActionListener{
     static JFrame addTournamentMenu;
-    static JButton returnButton;
+    static JButton returnButton, saveButton;
     static JTextField tournamentNameTF;
     static JLabel addData, tournamentNameL, invalidName;
     
@@ -29,12 +29,15 @@ public class AddTournamentMenu extends JFrame implements ActionListener{
         returnButton = new JButton("Return <=");
         returnButton.setBounds(325, 450, 150, 50);
         returnButton.addActionListener(e -> returnToMenu());
+        saveButton = new JButton("Save");
+        saveButton.setBounds(325, 350, 150, 50);
+        saveButton.addActionListener(e -> nameInput());
     }
     
     public static void initializeLabels(){
         addData = new JLabel("Please write into the appropriate box below and press enter.");
         addData.setBounds(220, 50, 360, 30);
-        tournamentNameL = new JLabel("Player Name:");
+        tournamentNameL = new JLabel("Tournament Name:");
         tournamentNameL.setBounds(150,150,125,25);
         invalidName = new JLabel("Invalid entry.");
         invalidName.setBounds(550, 150, 100, 25);
@@ -53,6 +56,7 @@ public class AddTournamentMenu extends JFrame implements ActionListener{
         addTournamentMenu.add(tournamentNameL);
         addTournamentMenu.add(invalidName);
         addTournamentMenu.add(tournamentNameTF);
+        addTournamentMenu.add(saveButton);
     }
     
     public static void frameSettings(){
@@ -68,8 +72,10 @@ public class AddTournamentMenu extends JFrame implements ActionListener{
         if(GameApp.checkInputForString(tournamentNameTF.getText()) == false){
             Tournament.tournaments.add(tournamentNameTF.getText());
             Tournament.storeTournaments();
+            Tournament.importTournaments();
             invalidName.setVisible(false);
             showMessageDialog(null, "Successfully added a tournament.");
+            returnToMenu();
         }else{
             invalidName.setVisible(true);
         }

@@ -5,9 +5,9 @@ import java.awt.*;
 import java.awt.event.*;
 import static javax.swing.JOptionPane.showMessageDialog;
 
-public class AddCityMenu extends JFrame implements ActionListener{
+public class AddCityMenu extends JFrame{
     static JFrame addCityMenu;
-    static JButton returnButton;
+    static JButton returnButton, saveButton;
     static JTextField cityNameTF;
     static JLabel addData, cityNameL, invalidName;
     
@@ -30,12 +30,15 @@ public class AddCityMenu extends JFrame implements ActionListener{
         returnButton = new JButton("Return <=");
         returnButton.setBounds(325, 450, 150, 50);
         returnButton.addActionListener(e -> returnToMenu());
+        saveButton = new JButton("Save");
+        saveButton.setBounds(325, 350, 150, 50);
+        saveButton.addActionListener(e -> nameInput());
     }
     
     public static void initializeLabels(){
         addData = new JLabel("Please write into the appropriate box below and press enter.");
         addData.setBounds(220, 50, 360, 30);
-        cityNameL = new JLabel("Player Name:");
+        cityNameL = new JLabel("City Name:");
         cityNameL.setBounds(150,150,125,25);
         invalidName = new JLabel("Invalid entry.");
         invalidName.setBounds(550, 150, 100, 25);
@@ -54,12 +57,14 @@ public class AddCityMenu extends JFrame implements ActionListener{
         addCityMenu.add(cityNameL);
         addCityMenu.add(invalidName);
         addCityMenu.add(cityNameTF);
+        addCityMenu.add(saveButton);
     }
     
     public static void nameInput(){
         if(GameApp.checkInputForString(cityNameTF.getText()) == false){
             City.cities.add(cityNameTF.getText().trim());
             City.storeCities();
+            City.importCities();
             invalidName.setVisible(false);
             showMessageDialog(null, "Successfully added a city.");
             returnToMenu();
@@ -80,9 +85,5 @@ public class AddCityMenu extends JFrame implements ActionListener{
     public static void returnToMenu(){
         addCityMenu.dispose();
         new MainMenu();
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
     }
 }

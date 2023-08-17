@@ -30,7 +30,7 @@ public class ShowPlayerData extends JFrame implements ActionListener{
     
     public static void frameSettings(){
         showPlayerDataMenu.setSize(800, 600);
-        showPlayerDataMenu.setLayout(new GridLayout(2,1));
+        showPlayerDataMenu.setLayout(new GridBagLayout());
         showPlayerDataMenu.setVisible(true);
         showPlayerDataMenu.setLocationRelativeTo(null);
         showPlayerDataMenu.setResizable(false);
@@ -45,7 +45,7 @@ public class ShowPlayerData extends JFrame implements ActionListener{
     
     public static void initializeTables(){
         playerDisplay = new JTable(Player.array,Player.playerTable);
-        playerDisplay.setBounds(100, 50, 600, 350);
+        playerDisplay.setBounds(0, 0, 800, 450);
         playerDisplayPane = new JScrollPane(playerDisplay);
        
         
@@ -58,8 +58,6 @@ public class ShowPlayerData extends JFrame implements ActionListener{
                 return false;
             }
         };
-        playerDisplay.setModel(tableModel);
-
         playerDisplay.setModel(tableModel);
     }
     

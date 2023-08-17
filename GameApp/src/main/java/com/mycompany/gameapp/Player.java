@@ -48,7 +48,7 @@ public class Player implements ActionListener{
     public static String playerOrigin;
     public static String playerGender;
     public static String[][] array;
-    public static String[] playerTable = {"Name", "Surname", "Age", "Origin", "Gender", "Matches Won"};
+    public static String[] playerTable = {"Name", "Surname", "Age", "Origin", "Gender", "Match Wins"};
     
     public static void showPlayers(){
         for(Player player: players){
@@ -74,6 +74,12 @@ public class Player implements ActionListener{
 //    Depolanan player isimlerini yuklemek icin method.
     @SuppressWarnings("empty-statement")
     public static void importPlayers(){
+        if(players.isEmpty() == false){
+            players.clear();
+        }
+        if(playerArray.isEmpty() == false){
+            playerArray.clear();
+        }
         ObjectMapper mapper = new ObjectMapper();
         try{
             if(!file.exists()){
@@ -101,8 +107,6 @@ public class Player implements ActionListener{
             for (List<String> nestedList : playerArray) {
                 array[i++] = nestedList.toArray(new String[0]);
             }
-            
-            ShowPlayerData.playerDisplay = new JTable(array, playerTable);
         }catch(IOException ex){
             ex.printStackTrace();
         }

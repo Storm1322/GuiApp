@@ -59,8 +59,8 @@ public class SavedDataMenu extends JFrame implements ActionListener{
     }
     
     public static void returnToMenu(){
-        savedDataMenu.dispose();
         new MainMenu();
+        savedDataMenu.dispose();
     }
     
     public static void showPlayerData(){
@@ -74,7 +74,8 @@ public class SavedDataMenu extends JFrame implements ActionListener{
     }
     
     public static void showTournamentData(){
-        
+        new ShowTournamentData();
+        savedDataMenu.dispose();
     }
     
     @Override

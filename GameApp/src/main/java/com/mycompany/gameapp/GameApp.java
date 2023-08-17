@@ -8,11 +8,10 @@ import static javax.swing.JOptionPane.showMessageDialog;
 class GameApp extends JFrame implements ActionListener{
     static JFrame frame = new JFrame("Tennis Simulation");
     static JButton yesButton, noButton, exitButton, addPlayerButton, addCityButton, addTournamentButton, continueButton, returnButton, deletePlayerButton, deleteCityButton, deleteTournamentButton, beginTournamentButton, seeSavedData;
-    static JLabel invalidInput, areYouSure, playerDataL, cityDataL, tournamentDataL, cityL, tournamentL, playerCountL, notEnough, tournamentPlayersL, playerOneL, playerTwoL, dashL, playerOneScoreL, playerTwoScoreL, tournamentWinnerL;
+    static JLabel invalidInput, areYouSure, playerDataL, cityDataL, tournamentDataL, cityL, tournamentL, playerCountL, notEnough, tournamentPlayersL, playerOneL, playerTwoL, dashL, tournamentWinnerL;
     static JTextField tournamentTF, cityTF, playerCountTF, playerOneScoreTF, playerTwoScoreTF;
     static JTextArea playerDisplayTA, cityDisplayTA, tournamentDisplayTA;
     static JScrollPane playerDisplaySP, cityDisplaySP, tournamentDisplaySP;
-    static JTable showPlayers, matchScores;
     static boolean dataAlreadyShown = false;
     static String current;
     
@@ -34,10 +33,6 @@ class GameApp extends JFrame implements ActionListener{
         continueButton = new JButton("Continue");
         continueButton.setBounds(325, 400, 150, 50);
         continueButton.addActionListener(this);
-        continueButton.addActionListener(new Player());
-        continueButton.addActionListener(new City());
-        continueButton.addActionListener(new Tournament());
-        continueButton.addActionListener(new Simulation());
         returnButton = new JButton("Return <=");
         returnButton.setBounds(100, 450, 150, 50);
         returnButton.addActionListener(this);
@@ -102,10 +97,6 @@ class GameApp extends JFrame implements ActionListener{
         playerTwoL.setBounds(475, 300, 150, 25);
         dashL = new JLabel("---");
         dashL.setBounds(398, 300, 25, 25);
-        playerOneScoreL = new JLabel();
-        playerOneScoreL.setBounds(275, 150, 250, 25);
-        playerTwoScoreL = new JLabel();
-        playerTwoScoreL.setBounds(275, 150, 250, 25);
         tournamentWinnerL = new JLabel();
         tournamentWinnerL.setHorizontalAlignment(JLabel.CENTER);
         
@@ -158,8 +149,6 @@ class GameApp extends JFrame implements ActionListener{
         frame.add(dashL);
         frame.add(playerOneScoreTF);
         frame.add(playerTwoScoreTF);
-        frame.add(playerOneScoreL);
-        frame.add(playerTwoScoreL);
         frame.add(tournamentWinnerL);
         
         returnToMenu();
@@ -322,8 +311,6 @@ class GameApp extends JFrame implements ActionListener{
         dashL.setVisible(false);
         playerOneScoreTF.setVisible(false);
         playerTwoScoreTF.setVisible(false);
-        playerOneScoreL.setVisible(false);
-        playerTwoScoreL.setVisible(false);
         addPlayerButton.setVisible(true);
         addCityButton.setVisible(true);
         addTournamentButton.setVisible(true);

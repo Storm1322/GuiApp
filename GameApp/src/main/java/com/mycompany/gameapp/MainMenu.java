@@ -65,11 +65,6 @@ public class MainMenu extends JFrame implements ActionListener{
         mainMenu.setResizable(false);
         mainMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        
-    }
     
     public static void launchAddPlayerFrame(){
         new AddPlayerMenu();
@@ -87,23 +82,32 @@ public class MainMenu extends JFrame implements ActionListener{
     }
     
     public static void launchDeletePlayerFrame(){
-        
+        new DeletePlayersMenu();
+        mainMenu.dispose();
     }
     
     public static void launchDeleteCityFrame(){
-        
+        new DeleteCityMenu();
+        mainMenu.dispose();
     }
     
     public static void launchDeleteTournamentFrame(){
-        
+        new DeleteTournamentMenu();
+        mainMenu.dispose();
     }
     
     public static void launchBeginTournamentFrame(){
-        
+        new BeginTournamentMenu();
+        mainMenu.dispose();
     }
     
     public static void launchSavedDataFrame(){
         mainMenu.dispose();
         new SavedDataMenu();
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
     }
 }

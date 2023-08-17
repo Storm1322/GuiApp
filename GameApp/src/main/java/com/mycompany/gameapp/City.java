@@ -1,12 +1,5 @@
 package com.mycompany.gameapp;
 
-import static com.mycompany.gameapp.GameApp.checkInputForString;
-import static com.mycompany.gameapp.GameApp.cityDisplayTA;
-import static com.mycompany.gameapp.GameApp.cityTF;
-import static com.mycompany.gameapp.GameApp.dataAlreadyShown;
-import static com.mycompany.gameapp.GameApp.invalidInput;
-import static com.mycompany.gameapp.GameApp.playerDisplayTA;
-import static com.mycompany.gameapp.GameApp.tournamentDisplayTA;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -18,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static javax.swing.JOptionPane.showMessageDialog;
 
 public class City implements ActionListener{
     
@@ -44,6 +36,9 @@ public class City implements ActionListener{
     
 //    Depolanan sehirleri loadlamak icin method.
     public static void importCities(){
+        if(cities.isEmpty() == false){
+            cities.clear();
+        }
         Path file = Paths.get("Cities.txt");
         try{
             cities = Files.readAllLines(file);
@@ -54,7 +49,6 @@ public class City implements ActionListener{
                 String[] array = new String[1];
                 array[0] = city;
                 cityArray[i++] = array;
-                System.out.println(cityArray);
             }
            }catch (IOException ex){
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);

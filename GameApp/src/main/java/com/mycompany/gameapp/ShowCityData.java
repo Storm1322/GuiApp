@@ -45,8 +45,6 @@ public class ShowCityData extends JFrame implements ActionListener{
             }
         };
         cityDisplay.setModel(tableModel);
-
-        cityDisplay.setModel(tableModel);
     }
     
     public static void addComponentsToFrame(){
@@ -56,7 +54,7 @@ public class ShowCityData extends JFrame implements ActionListener{
     
     public static void frameSettings(){
         showCityDataMenu.setSize(800, 600);
-        showCityDataMenu.setLayout(new GridLayout(2,1));
+        showCityDataMenu.setLayout(new GridBagLayout());
         showCityDataMenu.setVisible(true);
         showCityDataMenu.setLocationRelativeTo(null);
         showCityDataMenu.setResizable(false);

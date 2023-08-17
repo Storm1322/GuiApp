@@ -14,6 +14,8 @@ public class Simulation implements ActionListener{
     
     public static ArrayList<Integer> pickedNumbers = new ArrayList<>();
     public static ArrayList<String> playingPlayers = new ArrayList<>();
+    public static String[][] playingPlayersArray;
+    public static String[] participants = {"Participants"};
     public static List<Player> playingPlayersObjects = new ArrayList<>();
     public static List<Player> currentPlayersObjects = new ArrayList<>();
     public static List<Player> nextRoundObjects = new ArrayList<>();
@@ -46,21 +48,20 @@ public class Simulation implements ActionListener{
     
     public static void beginTournament(){
         playingPlayers.clear();
-            for(Player player: playingPlayersObjects){
-                playingPlayers.add(player.name + " " + player.surname);
-            }
-        GameApp.tournamentPlayersL.setText("Players of this tournament are: " + playingPlayers);
-        GameApp.tournamentPlayersL.setVisible(true);
-        GameApp.continueButton.setVisible(true);
+        playingPlayersArray = new String[Tournament.tournamentPlayerCount][1];
+        int i = 0;
+        for(Player player: playingPlayersObjects){
+            String[] array = new String[1];
+            array[0] = player.name + " " + player.surname;
+            playingPlayersArray[i++] = array;
+            playingPlayers.add(player.name + " " + player.surname);
+        }
     }
     
 //    Turnuvayi simule eden method.
     public static void simulateTournament(){
 //        Tek oyuncu kalinca kazanan olarak printle.
         if (playingPlayersObjects.size() == 1) {
-            GameApp.tournamentWinnerL.setText("Winner of the tournament is: " + playingPlayersObjects.get(0).name + " " + playingPlayersObjects.get(0).surname);
-            GameApp.tournamentWinnerL.setVisible(true);
-            GameApp.current = "tournament over";
         //        Rounddaki tum maclar bitince sonraki rounda gec.
         }else if (matchCount == Tournament.tournamentPlayerCount / Math.pow(2, roundCount)) {
             roundCount++;
@@ -74,17 +75,12 @@ public class Simulation implements ActionListener{
                 }
             }
             nextRoundObjects.clear();
-            GameApp.current = "moving to next round";
             playingPlayers.clear();
-            for(Player player: playingPlayersObjects){
-                playingPlayers.add(player.name + " " + player.surname);
-            }
-            if(playingPlayers.size() > 1){
-                GameApp.tournamentPlayersL.setText("Players of this round are: " + playingPlayers);
-                GameApp.tournamentPlayersL.setVisible(true);
-                GameApp.continueButton.setVisible(true);
-            }
-        }else if(GameApp.current == "simulating tournament" || GameApp.current == "tournament info display"){
+        }else{
+        for(Player player: playingPlayersObjects){
+            playingPlayers.add(player.name + " " + player.surname);
+        }
+        if(playingPlayers.size() > 1){
             matchCount++;
 //            Rastgele 2 oyuncuyu eslestir.
             Random rand = new Random();
@@ -101,14 +97,9 @@ public class Simulation implements ActionListener{
             
             playerOneSetScore = 0;
             playerTwoSetScore = 0;
-            
-            GameApp.playerOneL.setText(currentPlayersObjects.get(0).name + " " + currentPlayersObjects.get(0).surname + "    " + playerOneSetScore);
-            GameApp.playerTwoL.setText(playerTwoSetScore + "    " + currentPlayersObjects.get(1).name + " " + currentPlayersObjects.get(1).surname);
-            GameApp.playerOneL.setVisible(true);
-            GameApp.playerTwoL.setVisible(true);
-            scoreEntry();
-            }
         }
+        }
+    }
     
     public static void removePlayedPlayers(){
 //        Indexi buyuk olan playeri once sil.
@@ -122,112 +113,90 @@ public class Simulation implements ActionListener{
     }
     
 //    Userdan skor girdisi istemek icin method.
-    private static void scoreEntry() {
+    private static void winnerCheck() {
 //        2 set kazanmis oyuncu var mi check.
         if (playerOneSetScore == 4) {
             currentPlayersObjects.get(0).matchesWon++;
             nextRoundObjects.add(currentPlayersObjects.get(0));
             currentPlayersObjects.clear();
-            GameApp.playerOneL.setVisible(false);
-            GameApp.playerTwoL.setVisible(false);
+            SimulateTournamentMenu.playerOneL.setVisible(false);
+            SimulateTournamentMenu.playerTwoL.setVisible(false);
             Player.storePlayers();
             removePlayedPlayers();
-            simulateTournament();
+            SimulateTournamentMenu.simulateTournament();
         } else if (playerTwoSetScore == 4) {
             int winnerInt = playingPlayersObjects.indexOf(currentPlayersObjects.get(1));
             playingPlayersObjects.get(winnerInt).matchesWon++;
             nextRoundObjects.add(currentPlayersObjects.get(1));
             currentPlayersObjects.clear();
-            GameApp.playerOneL.setVisible(false);
-            GameApp.playerTwoL.setVisible(false);
+            SimulateTournamentMenu.playerOneL.setVisible(false);
+            SimulateTournamentMenu.playerTwoL.setVisible(false);
             Player.storePlayers();
             removePlayedPlayers();
-            simulateTournament();
+            SimulateTournamentMenu.simulateTournament();
         } else {
-            playerOneScoreEntry();
+            SimulateTournamentMenu.playerOneScoreEntry();
         }
     }
     
-    //    Birinci playerin skor girdi methodu.
-    private static void playerOneScoreEntry(){
-        String firstPlayer = currentPlayersObjects.get(0).name + " " + currentPlayersObjects.get(0).surname;
-        GameApp.playerOneScoreL.setText("Enter " + firstPlayer + "'s score:");
-        GameApp.playerOneScoreL.setVisible(true);
-        GameApp.playerOneScoreTF.setVisible(true);
-    }
-    
-//    Ikinci playerin skor girdi methodu.
-    private static void playerTwoScoreEntry(){
-        String secondPlayer = currentPlayersObjects.get(1).name + " " + currentPlayersObjects.get(1).surname;
-        GameApp.playerOneScoreTF.setVisible(false);
-        GameApp.playerTwoScoreL.setText("Enter " + secondPlayer + "'s score:");
-        GameApp.playerTwoScoreL.setVisible(true);
-        GameApp.playerTwoScoreTF.setVisible(true);
-    }
-    
-    private static void scoreCheck(){
+    protected static void scoreCheck(){
 //            Izin verilmeyen skorlar icin check ve tekrar girdi iste.
             if (playerOneScore != 60 && playerTwoScore != 60) {
-                GameApp.invalidInput.setVisible(true);
-                scoreEntry();
+                SimulateTournamentMenu.invalidInput.setVisible(true);
+                SimulateTournamentMenu.playerOneScoreEntry();
             } else if (playerOneScore == 60 && playerTwoScore == 60) {
-                GameApp.invalidInput.setVisible(true);
-                scoreEntry();
+                SimulateTournamentMenu.invalidInput.setVisible(true);
+                SimulateTournamentMenu.playerOneScoreEntry();
             } else if (playerTwoScore != 0 && playerTwoScore != 15 && playerTwoScore != 30 && playerTwoScore != 45 && playerOneScore == 60) {
-                GameApp.invalidInput.setVisible(true);
-                scoreEntry();
+                SimulateTournamentMenu.invalidInput.setVisible(true);
+                SimulateTournamentMenu.playerOneScoreEntry();
             } else if (playerOneScore != 0 && playerOneScore != 15 && playerOneScore != 30 && playerOneScore != 45 && playerTwoScore == 60) {
-                GameApp.invalidInput.setVisible(true);
-                scoreEntry();
+                SimulateTournamentMenu.invalidInput.setVisible(true);
+                SimulateTournamentMenu.playerOneScoreEntry();
 //            Skorlara gore kazanani belirle.
             } else {
                 GameApp.invalidInput.setVisible(false);
                 switch (playerOneScore) {
                     case 0:
                         playerTwoSetScore++;
-                        GameApp.playerOneL.setText(currentPlayersObjects.get(0).name + " " + currentPlayersObjects.get(0).surname + "    " + playerOneSetScore);
-                        GameApp.playerTwoL.setText(playerTwoSetScore + "    " + currentPlayersObjects.get(1).name + " " + currentPlayersObjects.get(1).surname);
-                        scoreEntry();
+                        SimulateTournamentMenu.playerOneL.setText(currentPlayersObjects.get(0).name + " " + currentPlayersObjects.get(0).surname + "    " + playerOneSetScore);
+                        SimulateTournamentMenu.playerTwoL.setText(playerTwoSetScore + "    " + currentPlayersObjects.get(1).name + " " + currentPlayersObjects.get(1).surname);
+                        winnerCheck();
                         break;
 
                     case 15:
                         playerTwoSetScore++;
-                        GameApp.playerOneL.setText(currentPlayersObjects.get(0).name + " " + currentPlayersObjects.get(0).surname + "    " + playerOneSetScore);
-                        GameApp.playerTwoL.setText(playerTwoSetScore + "    " + currentPlayersObjects.get(1).name + " " + currentPlayersObjects.get(1).surname);
-                        scoreEntry();
+                        SimulateTournamentMenu.playerOneL.setText(currentPlayersObjects.get(0).name + " " + currentPlayersObjects.get(0).surname + "    " + playerOneSetScore);
+                        SimulateTournamentMenu.playerTwoL.setText(playerTwoSetScore + "    " + currentPlayersObjects.get(1).name + " " + currentPlayersObjects.get(1).surname);
+                        winnerCheck();
                         break;
 
                     case 30:
                         playerTwoSetScore++;
-                        GameApp.playerOneL.setText(currentPlayersObjects.get(0).name + " " + currentPlayersObjects.get(0).surname + "    " + playerOneSetScore);
-                        GameApp.playerTwoL.setText(playerTwoSetScore + "    " + currentPlayersObjects.get(1).name + " " + currentPlayersObjects.get(1).surname);
-                        scoreEntry();
+                        SimulateTournamentMenu.playerOneL.setText(currentPlayersObjects.get(0).name + " " + currentPlayersObjects.get(0).surname + "    " + playerOneSetScore);
+                        SimulateTournamentMenu.playerTwoL.setText(playerTwoSetScore + "    " + currentPlayersObjects.get(1).name + " " + currentPlayersObjects.get(1).surname);
+                        winnerCheck();
                         break;
 
                     case 45:
                         playerTwoSetScore++;
-                        GameApp.playerOneL.setText(currentPlayersObjects.get(0).name + " " + currentPlayersObjects.get(0).surname + "    " + playerOneSetScore);
-                        GameApp.playerTwoL.setText(playerTwoSetScore + "    " + currentPlayersObjects.get(1).name + " " + currentPlayersObjects.get(1).surname);
-                        scoreEntry();
+                        SimulateTournamentMenu.playerOneL.setText(currentPlayersObjects.get(0).name + " " + currentPlayersObjects.get(0).surname + "    " + playerOneSetScore);
+                        SimulateTournamentMenu.playerTwoL.setText(playerTwoSetScore + "    " + currentPlayersObjects.get(1).name + " " + currentPlayersObjects.get(1).surname);
+                        winnerCheck();
                         break;
 
                     case 60:
                         playerOneSetScore++;
-                        GameApp.playerOneL.setText(currentPlayersObjects.get(0).name + " " + currentPlayersObjects.get(0).surname + "    " + playerOneSetScore);
-                        GameApp.playerTwoL.setText(playerTwoSetScore + "    " + currentPlayersObjects.get(1).name + " " + currentPlayersObjects.get(1).surname);
-                        scoreEntry();
+                        SimulateTournamentMenu.playerOneL.setText(currentPlayersObjects.get(0).name + " " + currentPlayersObjects.get(0).surname + "    " + playerOneSetScore);
+                        SimulateTournamentMenu.playerTwoL.setText(playerTwoSetScore + "    " + currentPlayersObjects.get(1).name + " " + currentPlayersObjects.get(1).surname);
+                        winnerCheck();
                         break;
-
-                    default:
             }
         }
     }
     
 //    Yeniden baslatmak icin method.
     public static void startAgain(){
-        GameApp.current = "start again";
-        GameApp.yesButton.setVisible(true);
-        GameApp.noButton.setVisible(true);
     }
 
     @Override
@@ -246,20 +215,6 @@ public class Simulation implements ActionListener{
             GameApp.tournamentPlayersL.setVisible(false);
             simulateTournament();
         }else if(e.getSource() == GameApp.playerOneScoreTF){
-            if(GameApp.checkInput(GameApp.playerOneScoreTF.getText()) == false){
-                playerOneScore = Integer.parseInt(GameApp.playerOneScoreTF.getText());
-                if(playerOneScore != 60 && playerOneScore != 45 && playerOneScore != 30 && playerOneScore != 15 && playerOneScore != 0){
-                    GameApp.invalidInput.setVisible(true);
-                }else{
-                    GameApp.playerOneScoreTF.setVisible(false);
-                    GameApp.playerOneScoreTF.removeAll();
-                    GameApp.playerOneScoreL.setVisible(false);
-                    GameApp.invalidInput.setVisible(false);
-                    playerTwoScoreEntry();
-                }
-            }else{
-                GameApp.invalidInput.setVisible(true);
-            }
         }else if(e.getSource() == GameApp.playerTwoScoreTF){
             if(GameApp.checkInput(GameApp.playerTwoScoreTF.getText()) == false){
                 playerTwoScore = Integer.parseInt(GameApp.playerTwoScoreTF.getText());
@@ -268,7 +223,6 @@ public class Simulation implements ActionListener{
                 }else{
                     GameApp.playerTwoScoreTF.setVisible(false);
                     GameApp.playerTwoScoreTF.removeAll();
-                    GameApp.playerTwoScoreL.setVisible(false);
                     GameApp.invalidInput.setVisible(false);
                     scoreCheck();
                 }
