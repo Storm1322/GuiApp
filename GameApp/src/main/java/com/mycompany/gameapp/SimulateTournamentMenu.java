@@ -118,14 +118,13 @@ public class SimulateTournamentMenu extends JFrame implements ActionListener{
         exitButton.setBounds(325, 500, 150, 50);
         playerOneScoreL.setBounds(275, 150, 250, 25);
         Simulation.simulateTournament();
+    }
+    
+    protected static void playerOneScoreEntry(){
         String firstPlayer = Simulation.currentPlayersObjects.get(0).name + " " + Simulation.currentPlayersObjects.get(0).surname;
         playerOneScoreL.setText("Enter " + firstPlayer + "'s score:");
         playerOneL.setText(firstPlayer + "    " + Simulation.playerOneSetScore);
         playerTwoL.setText(Simulation.playerTwoSetScore + "    " + Simulation.currentPlayersObjects.get(1).name + " " + Simulation.currentPlayersObjects.get(1).surname);
-        playerOneScoreEntry();
-    }
-    
-    protected static void playerOneScoreEntry(){
         playerOneScoreL.setVisible(true);
         playerOneL.setVisible(true);
         playerTwoL.setVisible(true);
@@ -165,6 +164,10 @@ public class SimulateTournamentMenu extends JFrame implements ActionListener{
                 Simulation.scoreCheck();
             }
         } 
+    }
+    
+    public static void nextRoundMessage(){
+        showMessageDialog(null, "");
     }
     
     public static void exit(){

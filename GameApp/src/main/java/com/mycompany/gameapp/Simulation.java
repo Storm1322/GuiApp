@@ -76,6 +76,7 @@ public class Simulation implements ActionListener{
             }
             nextRoundObjects.clear();
             playingPlayers.clear();
+            SimulateTournamentMenu.nextRoundMessage();
         }else{
         for(Player player: playingPlayersObjects){
             playingPlayers.add(player.name + " " + player.surname);
@@ -97,6 +98,8 @@ public class Simulation implements ActionListener{
             
             playerOneSetScore = 0;
             playerTwoSetScore = 0;
+            
+            SimulateTournamentMenu.playerOneScoreEntry();
         }
         }
     }
@@ -123,7 +126,7 @@ public class Simulation implements ActionListener{
             SimulateTournamentMenu.playerTwoL.setVisible(false);
             Player.storePlayers();
             removePlayedPlayers();
-            SimulateTournamentMenu.simulateTournament();
+            simulateTournament();
         } else if (playerTwoSetScore == 4) {
             int winnerInt = playingPlayersObjects.indexOf(currentPlayersObjects.get(1));
             playingPlayersObjects.get(winnerInt).matchesWon++;
@@ -133,7 +136,7 @@ public class Simulation implements ActionListener{
             SimulateTournamentMenu.playerTwoL.setVisible(false);
             Player.storePlayers();
             removePlayedPlayers();
-            SimulateTournamentMenu.simulateTournament();
+            simulateTournament();
         } else {
             SimulateTournamentMenu.playerOneScoreEntry();
         }
