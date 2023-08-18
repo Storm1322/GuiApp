@@ -1,6 +1,7 @@
 com\mycompany\gameapp\DeletePlayersMenu.class
 com\mycompany\gameapp\Simulation.class
 com\mycompany\gameapp\DeleteCityMenu.class
+com\mycompany\gameapp\Deployer$1.class
 com\mycompany\gameapp\DeleteTournamentMenu$1.class
 com\mycompany\gameapp\SavedDataMenu.class
 com\mycompany\gameapp\Tournament.class
@@ -17,6 +18,7 @@ com\mycompany\gameapp\AddPlayerMenu.class
 com\mycompany\gameapp\BeginTournamentMenu.class
 com\mycompany\gameapp\City.class
 com\mycompany\gameapp\SimulateTournamentMenu$1.class
+com\mycompany\gameapp\Deployer.class
 com\mycompany\gameapp\ShowCityData.class
 com\mycompany\gameapp\AddTournamentMenu.class
 com\mycompany\gameapp\AddCityMenu.class
