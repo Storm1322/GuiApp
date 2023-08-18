@@ -12,31 +12,41 @@ public class DeleteTournamentMenu extends JFrame implements ActionListener{
     static JButton returnButton, deleteButton;
     static JTable tournamentDisplay;
     static JScrollPane tournamentDisplayPane;
+    GridBagConstraints constraints;
     
     public DeleteTournamentMenu(){
+        constraints = new GridBagConstraints();
         deleteTournamentMenu = new JFrame("Tennis Tournament");
+        
+        frameSettings();
         
         initializeButtons();
         
         initializeTables();
-        
-        addComponentsToFrame();
-        
-        frameSettings();
     }
     
-    public static void initializeButtons(){
+    public void initializeButtons(){
         returnButton = new JButton("Return <=");
-        returnButton.setBounds(325, 450, 150, 50);
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        constraints.fill = GridBagConstraints.BOTH;
         returnButton.addActionListener(e -> returnToMenu());
+        deleteTournamentMenu.add(returnButton, constraints);
         deleteButton = new JButton("delete");
-        deleteButton.setBounds(325, 450, 150, 50);
+        constraints.gridx = 2;
+        constraints.gridy = 2;
         deleteButton.addActionListener(e -> confirmDeletion());
+        deleteTournamentMenu.add(deleteButton, constraints);
     }
     
-    public static void initializeTables(){
+    public void initializeTables(){
         tournamentDisplay = new JTable(Tournament.tournamentArray,Tournament.tournamentHeadline);
-        tournamentDisplay.setBounds(0, 0, 800, 450);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridheight = 2;
+        constraints.gridwidth = 3;
         tournamentDisplayPane = new JScrollPane(tournamentDisplay);
        
         
@@ -49,6 +59,7 @@ public class DeleteTournamentMenu extends JFrame implements ActionListener{
             }
         };
         tournamentDisplay.setModel(tableModel);
+        deleteTournamentMenu.add(tournamentDisplayPane, constraints);
     }
     
     public static void addComponentsToFrame(){
@@ -74,9 +85,11 @@ public class DeleteTournamentMenu extends JFrame implements ActionListener{
     public static void confirmDeletion(){
         int answer = showConfirmDialog(null, "Are you sure?", "Select an option...", JOptionPane.YES_NO_OPTION);
         if (answer == 0){
-            int rowToRemove = tournamentDisplay.getSelectedRow();
-            ((DefaultTableModel)tournamentDisplay.getModel()).removeRow(rowToRemove);
-            Tournament.tournaments.remove(rowToRemove);
+            int[] rowsToRemove = tournamentDisplay.getSelectedRows();
+            for(int i = rowsToRemove.length - 1; i >= 0; i--){
+                ((DefaultTableModel)tournamentDisplay.getModel()).removeRow(rowsToRemove[i]);
+                Tournament.tournaments.remove(rowsToRemove[i]);
+            }
             Tournament.storeTournaments();
             Tournament.importTournaments();
         }

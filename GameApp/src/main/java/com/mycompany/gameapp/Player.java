@@ -8,17 +8,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import static com.mycompany.gameapp.GameApp.checkInput;
-import static com.mycompany.gameapp.GameApp.checkInputForString;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Array;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import static javax.swing.JOptionPane.showMessageDialog;
 
-public class Player implements ActionListener{
+public class Player{
     public String name;
     public String surname;
     public String age;
@@ -50,17 +41,6 @@ public class Player implements ActionListener{
     public static String[][] array;
     public static String[] playerTable = {"Name", "Surname", "Age", "Origin", "Gender", "Match Wins"};
     
-    public static void showPlayers(){
-        for(Player player: players){
-            String playerDisplay = player.name + " " + player.surname;
-            GameApp.playerDisplayTA.append(playerDisplay + "\n");
-        }
-    }
-    
-    public static void deletePlayers(){
-        
-    }
-    
     //    Player isimlerini text dosyasina depolamak icin method.
     public static void storePlayers(){
         ObjectMapper mapper = new ObjectMapper();
@@ -72,7 +52,6 @@ public class Player implements ActionListener{
     }
 
 //    Depolanan player isimlerini yuklemek icin method.
-    @SuppressWarnings("empty-statement")
     public static void importPlayers(){
         if(players.isEmpty() == false){
             players.clear();
@@ -86,7 +65,6 @@ public class Player implements ActionListener{
                 Path f = Paths.get("Player.json");
                 Files.createFile(f);
             }
-            
             Player[] playersTemp = mapper.readValue(file, Player[].class);
             for (Player playersTemp1 : playersTemp) {
                 players.add(playersTemp1);
@@ -101,7 +79,6 @@ public class Player implements ActionListener{
                 playerArray.add(accessor.playerStatArray);
                 accessor.playerStatArray = new ArrayList<>();
             }
-            
             array = new String[players.size()][6];
             int i = 0;
             for (List<String> nestedList : playerArray) {
@@ -109,40 +86,6 @@ public class Player implements ActionListener{
             }
         }catch(IOException ex){
             ex.printStackTrace();
-        }
-    }
-
-//    Kaydedilmis playerlari silmek icin method.
-    public static void clearPlayers(){
-        try {
-            Path toDelete = Paths.get("Player.json");
-            Files.delete(toDelete);
-            Files.createFile(toDelete);
-            players.clear();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-    
-    public static void registerPlayers(){
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if(GameApp.current == "adding player"){
-            if(false){
-                Player player = new Player(playerName, playerSurname, playerAge, playerOrigin, playerGender);
-                players.add(player);
-                storePlayers();
-                GameApp.playerDisplayTA.setText(null);
-                GameApp.cityDisplayTA.setText(null);
-                GameApp.tournamentDisplayTA.setText(null);
-                GameApp.dataAlreadyShown = false;
-                showMessageDialog(null, "Successfully added a player.");
-                GameApp.returnToMenu();
-            }else{
-                GameApp.invalidInput.setVisible(true);
-            }
         }
     }
 }

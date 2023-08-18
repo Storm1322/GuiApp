@@ -10,29 +10,37 @@ public class ShowTournamentData extends JFrame implements ActionListener{
     static JTable tournamentDisplay;
     static JButton returnButton;
     static JScrollPane tournamentDisplayPane;
+    GridBagConstraints constraints;
     
     public ShowTournamentData() {
+        constraints = new GridBagConstraints();
         showTournamentDataMenu = new JFrame("Tennis Tournament");
+        
+        frameSettings();
         
         initializeButtons();
         
         initializeTables();
-        
-        addComponentsToFrame();
-        
-        frameSettings();
     }
     
-    public static void initializeButtons(){
+    public void initializeButtons(){
         returnButton = new JButton("Return <=");
-        returnButton.setBounds(325, 450, 150, 50);
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        constraints.fill = GridBagConstraints.BOTH;
         returnButton.addActionListener(e -> returnToMenu());
+        showTournamentDataMenu.add(returnButton, constraints);
     }
     
-    public static void initializeTables(){
+    public void initializeTables(){
         tournamentDisplay = new JTable(Tournament.tournamentArray, Tournament.tournamentHeadline);
-        tournamentDisplay.setBounds(100, 50, 600, 350);
         tournamentDisplayPane = new JScrollPane(tournamentDisplay);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridheight = 2;
+        constraints.gridwidth = 3;
        
         
         //instance table model
@@ -45,11 +53,7 @@ public class ShowTournamentData extends JFrame implements ActionListener{
             }
         };
         tournamentDisplay.setModel(tableModel);
-    }
-    
-    public static void addComponentsToFrame(){
-        showTournamentDataMenu.add(tournamentDisplayPane);
-        showTournamentDataMenu.add(returnButton);
+        showTournamentDataMenu.add(tournamentDisplayPane, constraints);
     }
     
     public static void frameSettings(){

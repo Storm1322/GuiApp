@@ -1,7 +1,5 @@
 package com.mycompany.gameapp;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -12,17 +10,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class City implements ActionListener{
+public class City{
     
     public static List<String> cities = new ArrayList<>();
     public static String[][] cityArray;
     public static String[] cityHeadline = {"City Name"};;
-    
-    public static void showCities(){
-        for(String city: cities){
-            GameApp.cityDisplayTA.append(city + "\n");
-        }
-    }
     
     //    Eklenen sehirleri text fileda depolamak icin method.
     public static void storeCities(){
@@ -42,7 +34,6 @@ public class City implements ActionListener{
         Path file = Paths.get("Cities.txt");
         try{
             cities = Files.readAllLines(file);
-            
             cityArray = new String[cities.size()][1];
             int i = 0;
             for(String city: cities){
@@ -50,23 +41,8 @@ public class City implements ActionListener{
                 array[0] = city;
                 cityArray[i++] = array;
             }
-           }catch (IOException ex){
+        }catch (IOException ex){
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    
-    public static void addCity(){
-        GameApp.cityTF.setVisible(true);
-        GameApp.cityL.setVisible(true);
-        GameApp.continueButton.setVisible(true);
-        GameApp.returnButton.setVisible(true);
-    }
-    
-    public static void deleteCities(){
-        
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
     }
 }

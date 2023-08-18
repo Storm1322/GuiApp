@@ -61,7 +61,7 @@ public class AddCityMenu extends JFrame{
     }
     
     public static void nameInput(){
-        if(GameApp.checkInputForString(cityNameTF.getText()) == false){
+        if(GameApp.checkInputForString(cityNameTF.getText().trim()) == false){
             City.cities.add(cityNameTF.getText().trim());
             City.storeCities();
             City.importCities();

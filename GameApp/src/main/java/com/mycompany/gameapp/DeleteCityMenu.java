@@ -12,33 +12,42 @@ public class DeleteCityMenu extends JFrame implements ActionListener{
     static JButton returnButton, deleteButton;
     static JTable cityDisplay;
     static JScrollPane cityDisplayPane;
+    GridBagConstraints constraints;
     
     public DeleteCityMenu(){
+        constraints = new GridBagConstraints();
         deleteCityMenu = new JFrame("Tennis Tournament");
+        
+        frameSettings();
         
         initializeButtons();
         
         initializeTables();
-        
-        addComponentsToFrame();
-        
-        frameSettings();
     }
     
-    public static void initializeButtons(){
+    public void initializeButtons(){
         returnButton = new JButton("Return <=");
-        returnButton.setBounds(325, 450, 150, 50);
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        constraints.fill = GridBagConstraints.BOTH;
         returnButton.addActionListener(e -> returnToMenu());
+        deleteCityMenu.add(returnButton, constraints);
         deleteButton = new JButton("delete");
-        deleteButton.setBounds(325, 450, 150, 50);
+        constraints.gridx = 2;
+        constraints.gridy = 2;
         deleteButton.addActionListener(e -> confirmDeletion());
+        deleteCityMenu.add(deleteButton, constraints);
     }
     
-    public static void initializeTables(){
+    public void initializeTables(){
         cityDisplay = new JTable(City.cityArray,City.cityHeadline);
-        cityDisplay.setBounds(0, 0, 800, 450);
         cityDisplayPane = new JScrollPane(cityDisplay);
-       
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridheight = 2;
+        constraints.gridwidth = 3;
         
         //instance table model
         DefaultTableModel tableModel = new DefaultTableModel(City.cityArray,City.cityHeadline) {
@@ -49,12 +58,7 @@ public class DeleteCityMenu extends JFrame implements ActionListener{
             }
         };
         cityDisplay.setModel(tableModel);
-    }
-    
-    public static void addComponentsToFrame(){
-        deleteCityMenu.add(returnButton);
-        deleteCityMenu.add(cityDisplayPane);
-        deleteCityMenu.add(deleteButton);       
+        deleteCityMenu.add(cityDisplayPane, constraints);
     }
     
     public static void frameSettings(){
@@ -74,9 +78,11 @@ public class DeleteCityMenu extends JFrame implements ActionListener{
     public static void confirmDeletion(){
         int answer = showConfirmDialog(null, "Are you sure?", "Select an option...", JOptionPane.YES_NO_OPTION);
         if (answer == 0){
-            int rowToRemove = cityDisplay.getSelectedRow();
-            ((DefaultTableModel)cityDisplay.getModel()).removeRow(rowToRemove);
-            City.cities.remove(rowToRemove);
+            int[] rowsToRemove = cityDisplay.getSelectedRows();
+            for(int i = rowsToRemove.length - 1; i >= 0; i--){
+                ((DefaultTableModel)cityDisplay.getModel()).removeRow(rowsToRemove[i]);
+                City.cities.remove(rowsToRemove[i]);
+            }
             City.storeCities();
             City.importCities();
         }

@@ -10,29 +10,37 @@ public class ShowCityData extends JFrame implements ActionListener{
     static JButton returnButton;
     static JTable cityDisplay;
     static JScrollPane cityDisplayPane;
+    GridBagConstraints constraints;
     
     public ShowCityData(){
+        constraints = new GridBagConstraints();
         showCityDataMenu = new JFrame("Tennis Tournament");
+        
+        frameSettings();
         
         initializeButtons();
         
         initializeTables();
-        
-        addComponentsToFrame();
-        
-        frameSettings();
     }
     
-    public static void initializeButtons(){
+    public void initializeButtons(){
         returnButton = new JButton("Return <=");
-        returnButton.setBounds(325, 450, 150, 50);
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        constraints.fill = GridBagConstraints.BOTH;
         returnButton.addActionListener(e -> returnToMenu());
+        showCityDataMenu.add(returnButton, constraints);
     }
     
-    public static void initializeTables(){
+    public void initializeTables(){
         cityDisplay = new JTable(City.cities.size(),1);
-        cityDisplay.setBounds(100, 50, 600, 350);
         cityDisplayPane = new JScrollPane(cityDisplay);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridheight = 2;
+        constraints.gridwidth = 3;
        
         
         //instance table model
@@ -45,11 +53,7 @@ public class ShowCityData extends JFrame implements ActionListener{
             }
         };
         cityDisplay.setModel(tableModel);
-    }
-    
-    public static void addComponentsToFrame(){
-        showCityDataMenu.add(cityDisplayPane);
-        showCityDataMenu.add(returnButton);
+        showCityDataMenu.add(cityDisplayPane, constraints);
     }
     
     public static void frameSettings(){

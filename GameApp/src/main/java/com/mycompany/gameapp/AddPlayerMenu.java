@@ -119,7 +119,7 @@ public class AddPlayerMenu extends JFrame implements ActionListener{
     
     public static void nameInput(){
         String name = playerNameTF.getText();
-        if(GameApp.checkInputForString(name) == false){
+        if(GameApp.checkInputForString(name.trim()) == false){
             playerNameTF.setEnabled(false);
             invalidName.setVisible(false);
             Player.playerName = name.trim();

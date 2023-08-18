@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class MainMenu extends JFrame implements ActionListener{
+public class MainMenu extends JFrame{
     static JFrame mainMenu;
     static JButton addPlayerButton, addCityButton, addTournamentButton, deletePlayerButton, deleteCityButton, deleteTournamentButton, beginTournamentButton, seeSavedData;
     
@@ -104,10 +104,5 @@ public class MainMenu extends JFrame implements ActionListener{
     public static void launchSavedDataFrame(){
         mainMenu.dispose();
         new SavedDataMenu();
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        
     }
 }

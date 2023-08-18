@@ -12,32 +12,42 @@ public class DeletePlayersMenu extends JFrame implements ActionListener{
     static JButton returnButton, deleteButton;
     static JTable playerDisplay;
     static JScrollPane playerDisplayPane;
+    GridBagConstraints constraints;
     
     public DeletePlayersMenu(){
+        constraints = new GridBagConstraints();
         deletePlayerMenu = new JFrame("Tennis Tournament");
+        
+        frameSettings();
         
         initializeButtons();
         
         initializeTables();
-        
-        addComponentsToFrame();
-        
-        frameSettings();
     }
     
-    public static void initializeButtons(){
+    public void initializeButtons(){
         returnButton = new JButton("Return <=");
-        returnButton.setBounds(325, 450, 150, 50);
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        constraints.fill = GridBagConstraints.BOTH;
         returnButton.addActionListener(e -> returnToMenu());
+        deletePlayerMenu.add(returnButton, constraints);
         deleteButton = new JButton("delete");
-        deleteButton.setBounds(325, 450, 150, 50);
+        constraints.gridx = 2;
+        constraints.gridy = 2;
         deleteButton.addActionListener(e -> confirmDeletion());
+        deletePlayerMenu.add(deleteButton, constraints);
     }
     
-    public static void initializeTables(){
+    public void initializeTables(){
         playerDisplay = new JTable(Player.array,Player.playerTable);
-        playerDisplay.setBounds(0, 0, 800, 450);
         playerDisplayPane = new JScrollPane(playerDisplay);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridheight = 2;
+        constraints.gridwidth = 3;
        
         
         //instance table model
@@ -49,6 +59,7 @@ public class DeletePlayersMenu extends JFrame implements ActionListener{
             }
         };
         playerDisplay.setModel(tableModel);
+        deletePlayerMenu.add(playerDisplayPane, constraints);
     }
     
     public static void addComponentsToFrame(){
@@ -74,9 +85,11 @@ public class DeletePlayersMenu extends JFrame implements ActionListener{
     public static void confirmDeletion(){
         int answer = showConfirmDialog(null, "Are you sure?", "Select an option...", JOptionPane.YES_NO_OPTION);
         if (answer == 0){
-            int rowToRemove = playerDisplay.getSelectedRow();
-            ((DefaultTableModel)playerDisplay.getModel()).removeRow(rowToRemove);
-            Player.players.remove(rowToRemove);
+            int[] rowsToRemove = playerDisplay.getSelectedRows();
+            for(int i = rowsToRemove.length - 1; i >= 0; i--){
+                ((DefaultTableModel)playerDisplay.getModel()).removeRow(rowsToRemove[i]);
+                Player.players.remove(rowsToRemove[i]);
+            }
             Player.storePlayers();
             Player.importPlayers();
         }

@@ -69,7 +69,7 @@ public class AddTournamentMenu extends JFrame implements ActionListener{
     }
     
     public static void nameInput(){
-        if(GameApp.checkInputForString(tournamentNameTF.getText()) == false){
+        if(GameApp.checkInputForString(tournamentNameTF.getText().trim()) == false){
             Tournament.tournaments.add(tournamentNameTF.getText());
             Tournament.storeTournaments();
             Tournament.importTournaments();

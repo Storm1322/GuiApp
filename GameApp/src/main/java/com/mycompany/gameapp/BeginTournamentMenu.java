@@ -10,7 +10,7 @@ public class BeginTournamentMenu extends JFrame implements ActionListener{
     static JFrame beginTournamentMenu;
     static JButton returnButton;
     static JTextField playerCountTF;
-    static JLabel invalidInput, playerCountL;
+    static JLabel invalidInput, playerCountL, notEnoughRegistered;
     static int playerCount;
     
     public BeginTournamentMenu(){
@@ -45,6 +45,9 @@ public class BeginTournamentMenu extends JFrame implements ActionListener{
         invalidInput = new JLabel("Invalid input. Please check again.");
         invalidInput.setBounds(300, 250, 200, 50);
         invalidInput.setVisible(false);
+        notEnoughRegistered = new JLabel("Not enough players are registered for desired player count.");
+        notEnoughRegistered.setBounds(235, 250, 330, 50);
+        notEnoughRegistered.setVisible(false);
     }
     
     public static void addComponentsToFrame(){
@@ -52,6 +55,7 @@ public class BeginTournamentMenu extends JFrame implements ActionListener{
         beginTournamentMenu.add(playerCountTF);
         beginTournamentMenu.add(playerCountL);
         beginTournamentMenu.add(invalidInput);
+        beginTournamentMenu.add(notEnoughRegistered);
     }
     
     public static void frameSettings(){
@@ -73,17 +77,25 @@ public class BeginTournamentMenu extends JFrame implements ActionListener{
         if(GameApp.checkInput(playerCountTF.getText()) == false){
             playerCount = Integer.parseInt(playerCountTF.getText());
             if(Tournament.powerOfTwo(playerCount) == true){
-                invalidInput.setVisible(false);
-                Tournament.tournamentPlayerCount = playerCount;
-                Simulation.randomizer();
-                showMessageDialog(null, "Successfully set player count of the tournament.");
-                new SimulateTournamentMenu();
-                beginTournamentMenu.dispose();
+                if(Player.players.size() - playerCount >= 0){
+                    invalidInput.setVisible(false);
+                    notEnoughRegistered.setVisible(false);
+                    Tournament.tournamentPlayerCount = playerCount;
+                    Simulation.randomizer();
+                    showMessageDialog(null, "Successfully set player count of the tournament.");
+                    new SimulateTournamentMenu();
+                    beginTournamentMenu.dispose();
+                }else{
+                    notEnoughRegistered.setVisible(true);
+                    invalidInput.setVisible(false);
+                }
             }else{
                 invalidInput.setVisible(true);
+                notEnoughRegistered.setVisible(false);
             }
         }else{
             invalidInput.setVisible(true);
+            notEnoughRegistered.setVisible(false);
         }
     }
     

@@ -10,22 +10,17 @@ public class ShowPlayerData extends JFrame implements ActionListener{
     static JTable playerDisplay;
     static JButton returnButton;
     static JScrollPane playerDisplayPane;
+    GridBagConstraints constraints;
     
     public ShowPlayerData(){
+        constraints = new GridBagConstraints();
         showPlayerDataMenu = new JFrame("Tennis Tournament");
+        
+        frameSettings();
         
         initializeButtons();
         
         initializeTables();
-        
-        addComponentsToFrame();
-        
-        frameSettings();
-    }
-    
-    public static void addComponentsToFrame(){
-        showPlayerDataMenu.add(playerDisplayPane);
-        showPlayerDataMenu.add(returnButton);
     }
     
     public static void frameSettings(){
@@ -37,16 +32,24 @@ public class ShowPlayerData extends JFrame implements ActionListener{
         showPlayerDataMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
-    public static void initializeButtons(){
+    public void initializeButtons(){
         returnButton = new JButton("Return <=");
-        returnButton.setBounds(325, 450, 150, 50);
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        constraints.fill = GridBagConstraints.BOTH;
         returnButton.addActionListener(e -> returnToMenu());
+        showPlayerDataMenu.add(returnButton, constraints);
     }
     
-    public static void initializeTables(){
+    public void initializeTables(){
         playerDisplay = new JTable(Player.array,Player.playerTable);
-        playerDisplay.setBounds(0, 0, 800, 450);
         playerDisplayPane = new JScrollPane(playerDisplay);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridheight = 2;
+        constraints.gridwidth = 3;
        
         
         //instance table model
@@ -59,6 +62,7 @@ public class ShowPlayerData extends JFrame implements ActionListener{
             }
         };
         playerDisplay.setModel(tableModel);
+        showPlayerDataMenu.add(playerDisplayPane, constraints);
     }
     
     public static void returnToMenu(){
