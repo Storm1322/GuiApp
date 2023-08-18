@@ -8,22 +8,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import static com.mycompany.gameapp.GameApp.checkInput;
-import static com.mycompany.gameapp.GameApp.checkInputForString;
-import static com.mycompany.gameapp.GameApp.playerAgeTF;
-import static com.mycompany.gameapp.GameApp.playerGenderTF;
-import static com.mycompany.gameapp.GameApp.playerNameTF;
-import static com.mycompany.gameapp.GameApp.playerOriginTF;
-import static com.mycompany.gameapp.GameApp.playerSurnameTF;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Array;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import static javax.swing.JOptionPane.showMessageDialog;
 
-public class Player implements ActionListener{
+public class Player{
     public String name;
     public String surname;
     public String age;
@@ -45,24 +31,15 @@ public class Player implements ActionListener{
     
     public static List<Player> players = new ArrayList<>();
     public static final File file = new File("Player.json");
-    public static List<ArrayList<String>> playerArray = new ArrayList<>();
-    public static ArrayList<String> playerStatArray = new ArrayList<>();
+    public static List<List<String>> playerArray = new ArrayList<>();
+    public List<String> playerStatArray = new ArrayList<>();
     public static String playerName;
     public static String playerSurname;
     public static String playerAge;
     public static String playerOrigin;
     public static String playerGender;
-    
-    public static void showPlayers(){
-        for(Player player: players){
-            String playerDisplay = player.name + " " + player.surname;
-            GameApp.playerDisplayTA.append(playerDisplay + "\n");
-        }
-    }
-    
-    public static void deletePlayers(){
-        
-    }
+    public static String[][] array;
+    public static String[] playerTable = {"Name", "Surname", "Age", "Origin", "Gender", "Match Wins"};
     
     //    Player isimlerini text dosyasina depolamak icin method.
     public static void storePlayers(){
@@ -76,85 +53,39 @@ public class Player implements ActionListener{
 
 //    Depolanan player isimlerini yuklemek icin method.
     public static void importPlayers(){
+        if(players.isEmpty() == false){
+            players.clear();
+        }
+        if(playerArray.isEmpty() == false){
+            playerArray.clear();
+        }
         ObjectMapper mapper = new ObjectMapper();
         try{
             if(!file.exists()){
                 Path f = Paths.get("Player.json");
                 Files.createFile(f);
             }
-            
-            String playerTable[] = {"Name", "Surname", "Age", "Origin", "Gender", "Matches Won"};
-            
             Player[] playersTemp = mapper.readValue(file, Player[].class);
             for (Player playersTemp1 : playersTemp) {
                 players.add(playersTemp1);
                 String matchesWonStr = String.valueOf(playersTemp1.matchesWon);
-                playerStatArray.add(playersTemp1.name);
-                playerStatArray.add(playersTemp1.surname);
-                playerStatArray.add(playersTemp1.age);
-                playerStatArray.add(playersTemp1.origin);
-                playerStatArray.add(playersTemp1.gender);
-                playerStatArray.add(matchesWonStr);
-                playerArray.add(playerStatArray);
+                Player accessor = new Player();
+                accessor.playerStatArray.add(playersTemp1.name);
+                accessor.playerStatArray.add(playersTemp1.surname);
+                accessor.playerStatArray.add(playersTemp1.age);
+                accessor.playerStatArray.add(playersTemp1.origin);
+                accessor.playerStatArray.add(playersTemp1.gender);
+                accessor.playerStatArray.add(matchesWonStr);
+                playerArray.add(accessor.playerStatArray);
+                accessor.playerStatArray = new ArrayList<>();
             }
-            GameApp.showPlayers = new JTable((Object[][]) playerArray.toArray(), playerTable);
+            array = new String[players.size()][6];
+            int i = 0;
+            for (List<String> nestedList : playerArray) {
+                array[i++] = nestedList.toArray(new String[0]);
+            }
         }catch(IOException ex){
             ex.printStackTrace();
-        }
-    }
-
-//    Kaydedilmis playerlari silmek icin method.
-    public static void clearPlayers(){
-        try {
-            Path toDelete = Paths.get("Player.json");
-            Files.delete(toDelete);
-            Files.createFile(toDelete);
-            players.clear();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-    
-    public static void registerPlayers(){
-        playerAddMenu();
-    }
-    
-    public static void playerAddMenu(){
-        GameApp.returnButton.setVisible(true);
-        GameApp.playerNameTF.setVisible(true);
-        GameApp.playerSurnameTF.setVisible(true);
-        GameApp.playerAgeTF.setVisible(true);
-        GameApp.playerOriginTF.setVisible(true);
-        GameApp.playerGenderTF.setVisible(true);
-        GameApp.continueButton.setVisible(true);
-        GameApp.playerNameL.setVisible(true);
-        GameApp.playerSurnameL.setVisible(true);
-        GameApp.playerAgeL.setVisible(true);
-        GameApp.playerOriginL.setVisible(true);
-        GameApp.playerGenderL.setVisible(true);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if(GameApp.current == "adding player"){
-            if(checkInputForString(playerNameTF.getText()) == false && checkInputForString(playerSurnameTF.getText()) == false && checkInput(playerAgeTF.getText()) == false && checkInputForString(playerOriginTF.getText()) == false && checkInputForString(playerGenderTF.getText()) == false){
-                playerName = playerNameTF.getText();
-                playerSurname = playerSurnameTF.getText();
-                playerAge = playerAgeTF.getText();
-                playerOrigin = playerOriginTF.getText();
-                playerGender = playerGenderTF.getText();
-                Player player = new Player(playerName, playerSurname, playerAge, playerOrigin, playerGender);
-                players.add(player);
-                storePlayers();
-                GameApp.playerDisplayTA.setText(null);
-                GameApp.cityDisplayTA.setText(null);
-                GameApp.tournamentDisplayTA.setText(null);
-                GameApp.dataAlreadyShown = false;
-                showMessageDialog(null, "Successfully added a player.");
-                GameApp.returnToMenu();
-            }else{
-                GameApp.invalidInput.setVisible(true);
-            }
         }
     }
 }
