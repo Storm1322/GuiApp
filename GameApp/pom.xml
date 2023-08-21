@@ -3,26 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.mycompany</groupId>
     <artifactId>GameApp</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
-	<build>
-      <plugins>
-        <plugin>
-           <artifactId>maven-jar-plugin</artifactId>
-		   <version>3.3.0</version>
-           <configuration>
-             <archive>
-               <manifest>
-                 <addClasspath>true</addClasspath>
-				 <classpathPrefix>lib/</classpathPrefix>
-				 <useUniqueVersions>false</useUniqueVersions>
-                 <mainClass>com.mycompany.gameapp.Deployer</mainClass>
-               </manifest>
-             </archive>
-           </configuration>
-        </plugin>
-      </plugins>
-    </build>
     <dependencies>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -44,11 +26,57 @@
             <artifactId>maven-jar-plugin</artifactId>
             <version>3.3.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>3.6.0</version>
+        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>20</maven.compiler.source>
         <maven.compiler.target>20</maven.compiler.target>
-        <exec.mainClass>com.mycompany.gameapp.GameApp</exec.mainClass>
+        <exec.mainClass>com.mycompany.gameapp.Deployer</exec.mainClass>
     </properties>
+	<build>
+      <plugins>
+        <plugin>
+           <artifactId>maven-jar-plugin</artifactId>
+		   <version>3.3.0</version>
+           <configuration>
+             <archive>
+               <manifest>
+                 <addClasspath>true</addClasspath>
+				 <classpathPrefix>lib/</classpathPrefix>
+				 <useUniqueVersions>false</useUniqueVersions>
+                 <mainClass>com.mycompany.gameapp.Deployer</mainClass>
+               </manifest>
+             </archive>
+           </configuration>
+        </plugin>
+		<plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>3.6.0</version>
+            <configuration>
+                <descriptorRefs>
+                    <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+                <archive>
+                    <manifest>
+                        <mainClass>com.mycompany.gameapp.Deployer</mainClass>
+                    </manifest>
+                </archive>
+            </configuration>
+            <executions>
+                <execution>
+                    <id>make-assembly</id> <!-- this is used for inheritance merges -->
+                    <phase>package</phase> <!-- bind to the packaging phase -->
+                    <goals>
+                        <goal>single</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+      </plugins>
+    </build>
 </project>
