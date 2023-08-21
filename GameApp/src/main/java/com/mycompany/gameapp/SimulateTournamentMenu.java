@@ -66,9 +66,9 @@ public class SimulateTournamentMenu extends JFrame{
         dashL.setBounds(398, 300, 25, 25);
         dashL.setVisible(false);
         playerOneScoreL = new JLabel();
-        playerOneScoreL.setBounds(275, 150, 250, 25);
+        playerOneScoreL.setBounds(275, 150, 300, 25);
         playerTwoScoreL = new JLabel();
-        playerTwoScoreL.setBounds(275, 150, 250, 25);
+        playerTwoScoreL.setBounds(275, 150, 300, 25);
         simulateTournamentMenu.add(playerTwoScoreL);
         simulateTournamentMenu.add(playerTwoL);
         simulateTournamentMenu.add(playerOneScoreL);
