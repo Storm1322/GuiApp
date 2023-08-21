@@ -168,6 +168,7 @@ public class SimulateTournamentMenu extends JFrame{
             Simulation.playerOneScore = Integer.parseInt(playerOneScoreTF.getText());
             if(Simulation.playerOneScore != 60 && Simulation.playerOneScore != 45 && Simulation.playerOneScore != 30 && Simulation.playerOneScore != 15 && Simulation.playerOneScore != 0){
                 invalidInput.setVisible(true);
+                GameApp.invalidInput.setVisible(false);
             }else{
                 playerOneScoreTF.setVisible(false);
                 playerOneScoreTF.setText("");
@@ -181,6 +182,7 @@ public class SimulateTournamentMenu extends JFrame{
                 playerTwoScoreTF.setVisible(true);
             }
         }else{
+            GameApp.invalidInput.setVisible(false);
             invalidInput.setVisible(true);
         }
     }
@@ -192,6 +194,7 @@ public class SimulateTournamentMenu extends JFrame{
             Simulation.playerTwoScore = Integer.parseInt(playerTwoScoreTF.getText());
             if(Simulation.playerTwoScore != 60 && Simulation.playerTwoScore != 45 && Simulation.playerTwoScore != 30 && Simulation.playerTwoScore != 15 && Simulation.playerTwoScore != 0){
                 invalidInput.setVisible(true);
+                GameApp.invalidInput.setVisible(false);
             }else{
                 invalidInput.setVisible(false);
                 playerTwoScoreTF.setText("");
@@ -200,6 +203,7 @@ public class SimulateTournamentMenu extends JFrame{
                 Simulation.scoreCheck();
             }
         }else{
+            GameApp.invalidInput.setVisible(false);
             invalidInput.setVisible(true);
         }
     }
