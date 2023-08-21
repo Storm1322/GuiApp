@@ -9,15 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class Player{
+public class Player {
+
     public String name;
     public String surname;
     public String age;
     public String origin;
     public String gender;
     public int matchesWon;
-    
-    public Player(String n, String s, String a, String o, String g){
+
+    public Player(String n, String s, String a, String o, String g) {
         name = n;
         surname = s;
         age = a;
@@ -25,10 +26,10 @@ public class Player{
         gender = g;
         matchesWon = 0;
     }
-    
-    public Player(){    
+
+    public Player() {
     }
-    
+
     public static List<Player> players = new ArrayList<>();
     public static final File file = new File("Player.json");
     public static List<List<String>> playerArray = new ArrayList<>();
@@ -40,28 +41,28 @@ public class Player{
     public static String playerGender;
     public static String[][] array;
     public static String[] playerTable = {"Name", "Surname", "Age", "Origin", "Gender", "Match Wins"};
-    
+
     //    Player isimlerini text dosyasina depolamak icin method.
-    public static void storePlayers(){
+    public static void storePlayers() {
         ObjectMapper mapper = new ObjectMapper();
-        try{
+        try {
             mapper.writeValue(file, players);
-        }catch(IOException ex){
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
 //    Depolanan player isimlerini yuklemek icin method.
-    public static void importPlayers(){
-        if(players.isEmpty() == false){
+    public static void importPlayers() {
+        if (players.isEmpty() == false) {
             players.clear();
         }
-        if(playerArray.isEmpty() == false){
+        if (playerArray.isEmpty() == false) {
             playerArray.clear();
         }
         ObjectMapper mapper = new ObjectMapper();
-        try{
-            if(!file.exists()){
+        try {
+            if (!file.exists()) {
                 Path f = Paths.get("Player.json");
                 Files.createFile(f);
             }
@@ -84,7 +85,7 @@ public class Player{
             for (List<String> nestedList : playerArray) {
                 array[i++] = nestedList.toArray(new String[0]);
             }
-        }catch(IOException ex){
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
     }

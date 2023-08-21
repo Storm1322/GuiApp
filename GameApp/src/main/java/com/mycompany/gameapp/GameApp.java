@@ -35,7 +35,7 @@ class GameApp extends JFrame{
         if(str.equals("")){
             return true;
         }else{
-            str = str.replaceAll("[^0-9]", "");
+            str = str.replaceAll("[a-zA-Z_-]", "");
             return !"".equals(str);
         }
     }
