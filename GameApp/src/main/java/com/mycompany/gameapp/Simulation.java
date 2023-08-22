@@ -1,27 +1,26 @@
 package com.mycompany.gameapp;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import static javax.swing.JOptionPane.showMessageDialog;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.JTable;
 
 public class Simulation{
     
     public static ArrayList<Integer> pickedNumbers = new ArrayList<>();
     public static ArrayList<String> playingPlayers = new ArrayList<>();
+    public static String[][] setArray;
     public static String[][] playingPlayersArray;
     public static String[] participants = {"Participants"};
     public static List<Player> playingPlayersObjects = new ArrayList<>();
     public static List<Player> currentPlayersObjects = new ArrayList<>();
     public static List<Player> nextRoundObjects = new ArrayList<>();
+    public static List<String> setScores;
     public static int firstPlayerIndex;
     public static int secondPlayerIndex;
     public static int matchCount = 0;
+    public static int matchesDone;
+    public static int currentSet = 0;
     public static int roundCount = 1;
     static int playerOneSetScore = 0;
     static int playerTwoSetScore = 0;
@@ -85,6 +84,7 @@ public class Simulation{
             }
             if(playingPlayers.size() > 1){
                 matchCount++;
+                matchesDone++;
 //                Rastgele 2 oyuncuyu eslestir.
                 Random rand = new Random();
                 firstPlayerIndex = rand.nextInt(playingPlayersObjects.size());
@@ -119,13 +119,24 @@ public class Simulation{
     
 //    Userdan skor girdisi istemek icin method.
     private static void winnerCheck() {
+        SimulateTournamentMenu.updateBracketScores(matchesDone, 
+            currentPlayersObjects.get(0).name + " " + currentPlayersObjects.get(0).surname, 
+            currentPlayersObjects.get(1).name + " " + currentPlayersObjects.get(1).surname, 
+            playerOneSetScore, playerTwoSetScore);
 //        2 set kazanmis oyuncu var mi check.
         if (playerOneSetScore == 4) {
             currentPlayersObjects.get(0).matchesWon++;
             nextRoundObjects.add(currentPlayersObjects.get(0));
             currentPlayersObjects.clear();
+            currentSet = 0;
             SimulateTournamentMenu.playerOneL.setVisible(false);
             SimulateTournamentMenu.playerTwoL.setVisible(false);
+            
+            for(int i = 0; i < 7; i++){
+                SimulateTournamentMenu.setScoresTable.setValueAt(0, i, 0);
+                SimulateTournamentMenu.setScoresTable.setValueAt(0, i, 1);
+            }
+            
             Player.storePlayers();
             removePlayedPlayers();
             simulateTournament();
@@ -134,8 +145,15 @@ public class Simulation{
             playingPlayersObjects.get(winnerInt).matchesWon++;
             nextRoundObjects.add(currentPlayersObjects.get(1));
             currentPlayersObjects.clear();
+            currentSet = 0;
             SimulateTournamentMenu.playerOneL.setVisible(false);
             SimulateTournamentMenu.playerTwoL.setVisible(false);
+            
+            for(int i = 0; i < 7; i++){
+                SimulateTournamentMenu.setScoresTable.setValueAt(0, i, 0);
+                SimulateTournamentMenu.setScoresTable.setValueAt(0, i, 1);
+            }
+            
             Player.storePlayers();
             removePlayedPlayers();
             simulateTournament();
@@ -160,6 +178,9 @@ public class Simulation{
                 SimulateTournamentMenu.playerOneScoreEntry();
 //            Skorlara gore kazanani belirle.
             } else {
+                SimulateTournamentMenu.setScoresTable.setValueAt(playerOneScore,currentSet,0);
+                SimulateTournamentMenu.setScoresTable.setValueAt(playerTwoScore,currentSet,1);
+                currentSet++;
                 GameApp.invalidInput.setVisible(false);
                 switch (playerOneScore) {
                     case 0:

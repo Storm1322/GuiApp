@@ -12,9 +12,17 @@ public class SimulateTournamentMenu extends JFrame{
     static JButton returnButton, continueButton, exitButton;
     static JTextField playerOneScoreTF, playerTwoScoreTF;
     static JLabel playerOneL, playerTwoL, invalidInput, dashL, playerOneScoreL, playerTwoScoreL;
-    static JTable tournamentParticipants;
-    static JScrollPane tournamentParticipantsPane;
+    static private JLabel[] matchLabels;
+    static JTable tournamentParticipants, setScoresTable;
+    static String[] scoreTableHeadlines = {"Player 1","Player 2"};
+    static String[] zeroArray = {"0","0"};
+    static String[][] setArray;
+    static JScrollPane tournamentParticipantsPane, bracketPanelPane, setScoresPanelPane;
+    static protected JPanel bracketPanel, setScoresPanel;
     GridBagConstraints constraints;
+    public static DefaultTableModel setScoreModel;
+    static int numOfRounds = (int) (Math.log(Double.valueOf(Tournament.tournamentPlayerCount)) / Math.log(2));
+    static int labelIndex;
     
     public SimulateTournamentMenu(){
         constraints = new GridBagConstraints();
@@ -27,6 +35,8 @@ public class SimulateTournamentMenu extends JFrame{
         initializeLabels();
         
         initializeTextFields();
+        
+        initializePanels();
         
         initializeTables();
     }
@@ -52,23 +62,23 @@ public class SimulateTournamentMenu extends JFrame{
         simulateTournamentMenu.add(exitButton, constraints);
     }
     
-    public static void initializeLabels(){
+    public void initializeLabels(){
         playerOneL = new JLabel();
-        playerOneL.setBounds(225, 300, 150, 25);
+        playerOneL.setBounds(125, 300, 150, 25);
         playerOneL.setVisible(false);
         playerTwoL = new JLabel();
-        playerTwoL.setBounds(475, 300, 150, 25);
+        playerTwoL.setBounds(375, 300, 150, 25);
         playerTwoL.setVisible(false);
         invalidInput = new JLabel("Invalid input. Please check again.");
-        invalidInput.setBounds(300, 250, 200, 50);
+        invalidInput.setBounds(200, 250, 200, 50);
         invalidInput.setVisible(false);
         dashL = new JLabel("---");
-        dashL.setBounds(398, 300, 25, 25);
+        dashL.setBounds(298, 300, 25, 25);
         dashL.setVisible(false);
         playerOneScoreL = new JLabel();
-        playerOneScoreL.setBounds(275, 150, 300, 25);
+        playerOneScoreL.setBounds(175, 150, 300, 25);
         playerTwoScoreL = new JLabel();
-        playerTwoScoreL.setBounds(275, 150, 300, 25);
+        playerTwoScoreL.setBounds(175, 150, 300, 25);
         simulateTournamentMenu.add(playerTwoScoreL);
         simulateTournamentMenu.add(playerTwoL);
         simulateTournamentMenu.add(playerOneScoreL);
@@ -77,19 +87,63 @@ public class SimulateTournamentMenu extends JFrame{
         simulateTournamentMenu.add(invalidInput);
         simulateTournamentMenu.add(GameApp.invalidInput);
         GameApp.invalidInput.setVisible(false);
+        
+        matchLabels = new JLabel[(int) (Math.pow(2, numOfRounds) - 1)];
+        
     }
     
     public static void initializeTextFields(){
         playerOneScoreTF = new JTextField();
-        playerOneScoreTF.setBounds(300, 200, 200, 25);
+        playerOneScoreTF.setBounds(200, 200, 200, 25);
         playerOneScoreTF.addActionListener(e -> playerTwoScoreEntry());
         playerOneScoreTF.setVisible(false);
         playerTwoScoreTF = new JTextField();
-        playerTwoScoreTF.setBounds(300, 200, 200, 25);
+        playerTwoScoreTF.setBounds(200, 200, 200, 25);
         playerTwoScoreTF.addActionListener(e -> checkScores());
         playerTwoScoreTF.setVisible(false);
         simulateTournamentMenu.add(playerOneScoreTF);
         simulateTournamentMenu.add(playerTwoScoreTF);
+    }
+    
+    public void initializePanels(){
+        bracketPanelPane = new JScrollPane(new JPanel());
+        bracketPanelPane.setBounds(425, 100, 375, 175);
+        
+        createBrackets(Tournament.tournamentPlayerCount / 2, 0);
+        bracketPanelPane.setVisible(false);
+        
+        setScoresPanel = new JPanel();
+        setScoresPanel.setLayout(new GridBagLayout());
+        setScoresPanel.setBackground(Color.gray);
+        setScoresPanelPane = new JScrollPane(setScoresPanel);
+        setScoresPanelPane.setBounds(550, 300, 200, 130);
+        setScoresPanelPane.setVisible(false);
+        simulateTournamentMenu.add(setScoresPanelPane);
+    }
+    
+    public static void createBrackets(int matchNumber,int currentRound){
+        bracketPanel = new JPanel();
+        if(matchNumber > 1){
+            bracketPanel.setLayout(new GridLayout(matchNumber * 3 / 2, 1));
+        }else{
+            bracketPanel.setLayout(new GridLayout(matchNumber, 1));
+        }
+        for (int j = 0; j < matchNumber; j++) {    
+            if(currentRound == 0){
+                matchLabels[labelIndex] = new JLabel("Match " + (labelIndex + 1) + ": ");
+                bracketPanel.add(matchLabels[labelIndex]);
+            }else{
+                bracketPanel.add(new JLabel(""));
+                matchLabels[labelIndex] = new JLabel("Match " + (labelIndex + 1) + ": ");
+                bracketPanel.add(matchLabels[labelIndex]);
+            }
+            labelIndex++;        
+        }
+        ((JPanel)bracketPanelPane.getViewport().getView()).add(bracketPanel);
+        simulateTournamentMenu.add(bracketPanelPane);
+        if(matchNumber > 1){
+            createBrackets(matchNumber / 2,currentRound + 1);
+        }
     }
     
     public void initializeTables(){
@@ -112,6 +166,28 @@ public class SimulateTournamentMenu extends JFrame{
         };
         tournamentParticipants.setModel(tableModel);
         simulateTournamentMenu.add(tournamentParticipantsPane, constraints);
+        
+        setArray = new String[7][2];
+        for (int i = 0; i < 7;){
+            setArray[i++] = zeroArray;
+        }
+        
+        //instance table model
+        setScoreModel = new DefaultTableModel(setArray, scoreTableHeadlines) {
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                //all cells false
+                return false;
+            }
+        };
+        setScoresTable = new JTable(setArray, scoreTableHeadlines);
+        setScoresTable.setModel(setScoreModel);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridheight = 3;
+        constraints.gridwidth = 3;
+        setScoresPanel.add(setScoresTable, constraints);
     }
     
     public static void frameSettings(){
@@ -132,6 +208,8 @@ public class SimulateTournamentMenu extends JFrame{
         Simulation.pickedNumbers.clear();
         Simulation.roundCount = 1;
         Simulation.matchCount = 0;
+        Simulation.currentSet = 0;
+        labelIndex = 0;
         simulateTournamentMenu.dispose();
         new BeginTournamentMenu();
     }
@@ -144,7 +222,7 @@ public class SimulateTournamentMenu extends JFrame{
         exitButton.setBounds(325, 500, 150, 50);
         returnButton.setBounds(100, 500, 150, 50);
         showMessageDialog(null, "Starting tournament simulation.\n You are expected to enter set scores for both players. \n Enter 60 for one player and either 45, 30, 15 or 0 for the other. \n First player to 4 sets wins.");
-        playerOneScoreL.setBounds(250, 150, 300, 25);
+        playerOneScoreL.setBounds(150, 150, 350, 25);
         Simulation.simulateTournament();
     }
     
@@ -158,8 +236,15 @@ public class SimulateTournamentMenu extends JFrame{
         playerOneL.setVisible(true);
         playerTwoL.setVisible(true);
         dashL.setVisible(true);
+        bracketPanelPane.setVisible(true);
+        setScoresPanelPane.setVisible(true);
+        updateBracketScores(Simulation.matchesDone, 
+            Simulation.currentPlayersObjects.get(0).name + " " + Simulation.currentPlayersObjects.get(0).surname, 
+            Simulation.currentPlayersObjects.get(1).name + " " + Simulation.currentPlayersObjects.get(1).surname, 
+       Simulation.playerOneSetScore, Simulation.playerTwoSetScore);
 //        Text Fielda input beklenicek.
         playerOneScoreTF.setVisible(true);
+        playerOneScoreTF.requestFocus();
     }
     
 //    Ikinci playerin skorunu girmek icin arayuz elemanlarini ayarlayan method.
@@ -175,11 +260,16 @@ public class SimulateTournamentMenu extends JFrame{
                 playerOneScoreL.setVisible(false);
                 invalidInput.setVisible(false);
                 playerOneScoreTF.setVisible(false);
+                updateBracketScores(Simulation.matchesDone, 
+                    Simulation.currentPlayersObjects.get(0).name + " " + Simulation.currentPlayersObjects.get(0).surname, 
+                    Simulation.currentPlayersObjects.get(1).name + " " + Simulation.currentPlayersObjects.get(1).surname, 
+               Simulation.playerOneSetScore, Simulation.playerTwoSetScore);
                 String secondPlayer = Simulation.currentPlayersObjects.get(1).name + " " + Simulation.currentPlayersObjects.get(1).surname;
-                playerTwoScoreL.setBounds(275, 150, 250, 25);
+                playerTwoScoreL.setBounds(150, 150, 350, 25);
                 playerTwoScoreL.setText("Enter " + secondPlayer + "'s score: (Press enter)");
                 playerTwoScoreL.setVisible(true);
                 playerTwoScoreTF.setVisible(true);
+                playerTwoScoreTF.requestFocus();
             }
         }else{
             GameApp.invalidInput.setVisible(false);
@@ -205,6 +295,14 @@ public class SimulateTournamentMenu extends JFrame{
         }else{
             GameApp.invalidInput.setVisible(false);
             invalidInput.setVisible(true);
+        }
+    }
+    
+    public static void updateBracketScores(int matchNumber, String participant1, String participant2, int wins1, int wins2){
+        if (matchNumber >= 1 && matchNumber <= Math.pow(2, numOfRounds + 1) - 1) {
+            matchLabels[matchNumber - 1].setText("Match " + matchNumber + ": " +
+                    participant1 + " (" + wins1 + " score) vs " +
+                    participant2 + " (" + wins2 + " score)");
         }
     }
     
