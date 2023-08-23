@@ -81,10 +81,9 @@ public class BeginTournamentMenu extends JFrame implements ActionListener{
                     invalidInput.setVisible(false);
                     notEnoughRegistered.setVisible(false);
                     Tournament.tournamentPlayerCount = playerCount;
-                    Simulation.randomizer();
                     showMessageDialog(null, "Successfully set player count of the tournament.");
-                    new SimulateTournamentMenu();
                     beginTournamentMenu.dispose();
+                    SelectOrRandomMenu.main(null);
                 }else{
                     notEnoughRegistered.setVisible(true);
                     invalidInput.setVisible(false);

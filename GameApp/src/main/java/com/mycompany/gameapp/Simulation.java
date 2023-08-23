@@ -1,5 +1,6 @@
 package com.mycompany.gameapp;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -57,7 +58,7 @@ public class Simulation{
     }
     
 //    Turnuvayi simule eden method.
-    public static void simulateTournament(){
+    public static void simulateTournament() throws IOException{
 //        Rounddaki tum maclar bitince sonraki rounda gec.        
         if (matchCount == Tournament.tournamentPlayerCount / Math.pow(2, roundCount)) {
             playingPlayersObjects.addAll(nextRoundObjects);
@@ -118,7 +119,7 @@ public class Simulation{
     }
     
 //    Userdan skor girdisi istemek icin method.
-    private static void winnerCheck() {
+    private static void winnerCheck() throws IOException {
         SimulateTournamentMenu.updateBracketScores(matchesDone, 
             currentPlayersObjects.get(0).name + " " + currentPlayersObjects.get(0).surname, 
             currentPlayersObjects.get(1).name + " " + currentPlayersObjects.get(1).surname, 
@@ -162,7 +163,7 @@ public class Simulation{
         }
     }
     
-    protected static void scoreCheck(){
+    protected static void scoreCheck() throws IOException{
 //            Izin verilmeyen skorlar icin check ve tekrar girdi iste.
             if (playerOneScore != 60 && playerTwoScore != 60) {
                 GameApp.invalidInput.setVisible(true);

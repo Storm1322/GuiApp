@@ -3,6 +3,16 @@ package com.mycompany.gameapp;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import static javax.swing.JOptionPane.showConfirmDialog;
 import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.table.DefaultTableModel;
@@ -53,7 +63,13 @@ public class SimulateTournamentMenu extends JFrame{
         continueButton = new JButton("Continue");
         constraints.gridx = 1;
         constraints.gridy = 2;
-        continueButton.addActionListener(e -> simulateTournament());
+        continueButton.addActionListener(e -> {
+            try {
+                simulateTournament();
+            } catch (IOException ex) {
+                Logger.getLogger(SimulateTournamentMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         simulateTournamentMenu.add(continueButton, constraints);
         exitButton = new JButton("Exit");
         constraints.gridx = 2;
@@ -99,7 +115,13 @@ public class SimulateTournamentMenu extends JFrame{
         playerOneScoreTF.setVisible(false);
         playerTwoScoreTF = new JTextField();
         playerTwoScoreTF.setBounds(200, 200, 200, 25);
-        playerTwoScoreTF.addActionListener(e -> checkScores());
+        playerTwoScoreTF.addActionListener(e -> {
+            try {
+                checkScores();
+            } catch (IOException ex) {
+                Logger.getLogger(SimulateTournamentMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         playerTwoScoreTF.setVisible(false);
         simulateTournamentMenu.add(playerOneScoreTF);
         simulateTournamentMenu.add(playerTwoScoreTF);
@@ -215,7 +237,7 @@ public class SimulateTournamentMenu extends JFrame{
     }
     
 //    Turnuva simulasyonunu baslatmak icin method.
-    protected static void simulateTournament(){
+    protected static void simulateTournament() throws IOException{
         continueButton.setVisible(false);
         tournamentParticipantsPane.setVisible(false);
         simulateTournamentMenu.setLayout(null);
@@ -279,7 +301,7 @@ public class SimulateTournamentMenu extends JFrame{
     
     
 //    Skorlar istenen sekilde girilmis mi kontrol etmek icin method.
-    public static void checkScores(){
+    public static void checkScores() throws IOException{
         if(GameApp.checkInput(playerTwoScoreTF.getText()) == false){
             Simulation.playerTwoScore = Integer.parseInt(playerTwoScoreTF.getText());
             if(Simulation.playerTwoScore != 60 && Simulation.playerTwoScore != 45 && Simulation.playerTwoScore != 30 && Simulation.playerTwoScore != 15 && Simulation.playerTwoScore != 0){
@@ -312,8 +334,22 @@ public class SimulateTournamentMenu extends JFrame{
     }
     
 //    Kazanani gosteren method.
-    public static void winnerMessage(){
+    public static void winnerMessage() throws IOException{
         dashL.setVisible(false);
+        Dimension size = bracketPanelPane.getSize();
+        int imageHeight = size.height;
+        int imageWidth = size.width;
+        
+        for(int j = 0; j < bracketPanelPane.getComponentCount(); j++){
+            BufferedImage componentImage = new BufferedImage(imageHeight, imageWidth, BufferedImage.TYPE_INT_RGB);
+//            Now paint the component directly onto the image
+            Graphics2D imageGraphics = componentImage.createGraphics();
+            bracketPanelPane.getComponent(j).paint(imageGraphics);
+            Path f = Paths.get("TournamentName" + j + ".jpg");
+            Files.createFile(f);
+            File file = new File("TournamentName" + j + ".jpg");
+            ImageIO.write(componentImage, "jpg", file);
+        }
         showMessageDialog(null, Simulation.playingPlayersObjects.get(0).name + " " + Simulation.playingPlayersObjects.get(0).surname + " has won the tournament!");
         int answer = showConfirmDialog(null, "Would you like to start another tournament?", "Start Again?", JOptionPane.YES_NO_OPTION);
         if (answer == 0){
