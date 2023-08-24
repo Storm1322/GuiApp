@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -145,6 +144,7 @@ public class SimulateTournamentMenu extends JFrame{
     
     public static void createBrackets(int matchNumber,int currentRound){
         bracketPanel = new JPanel();
+        bracketPanel.setPreferredSize(new Dimension(400,100));
         if(matchNumber > 1){
             bracketPanel.setLayout(new GridLayout(matchNumber * 3 / 2, 1));
         }else{
@@ -343,7 +343,7 @@ public class SimulateTournamentMenu extends JFrame{
         for(int j = 0; j < bracketPanelPane.getComponentCount(); j++){
             BufferedImage componentImage = new BufferedImage(imageHeight, imageWidth, BufferedImage.TYPE_INT_RGB);
 //            Now paint the component directly onto the image
-            Graphics2D imageGraphics = componentImage.createGraphics();
+            Graphics imageGraphics = componentImage.createGraphics();
             bracketPanelPane.getComponent(j).paint(imageGraphics);
             Path f = Paths.get("TournamentName" + j + ".jpg");
             Files.createFile(f);

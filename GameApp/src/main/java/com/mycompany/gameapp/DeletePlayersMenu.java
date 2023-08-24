@@ -7,7 +7,7 @@ import java.util.Vector;
 import static javax.swing.JOptionPane.showConfirmDialog;
 import javax.swing.table.DefaultTableModel;
 
-public class DeletePlayersMenu extends JFrame implements ActionListener{
+public class DeletePlayersMenu extends JFrame implements KeyListener{
     static JFrame deletePlayerMenu;
     static JButton returnButton, deleteButton;
     static JTable playerDisplay;
@@ -23,6 +23,8 @@ public class DeletePlayersMenu extends JFrame implements ActionListener{
         initializeButtons();
         
         initializeTables();
+        
+        deletePlayerMenu.addKeyListener(this);
     }
     
     public void initializeButtons(){
@@ -94,8 +96,31 @@ public class DeletePlayersMenu extends JFrame implements ActionListener{
             Player.importPlayers();
         }
     }
+    public void keyPressed(KeyEvent e) {
+        int key = e.getKeyCode();
+
+        if(key == KeyEvent.VK_DELETE){
+            confirmDeletion();
+        }
+    }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void keyTyped(KeyEvent e) {
+        int key = e.getKeyCode();
+
+        if(key == KeyEvent.VK_DELETE){
+            confirmDeletion();
+            System.out.println("delete pressed");
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        int key = e.getKeyCode();
+
+        if(key == KeyEvent.VK_DELETE){
+            confirmDeletion();
+            System.out.println("delete pressed");
+        }
     }
 }

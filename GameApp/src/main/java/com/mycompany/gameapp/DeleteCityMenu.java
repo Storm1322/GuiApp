@@ -3,11 +3,10 @@ package com.mycompany.gameapp;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Vector;
 import static javax.swing.JOptionPane.showConfirmDialog;
 import javax.swing.table.DefaultTableModel;
 
-public class DeleteCityMenu extends JFrame implements ActionListener{
+public class DeleteCityMenu extends JFrame implements KeyListener{
     static JFrame deleteCityMenu;
     static JButton returnButton, deleteButton;
     static JTable cityDisplay;
@@ -23,6 +22,8 @@ public class DeleteCityMenu extends JFrame implements ActionListener{
         initializeButtons();
         
         initializeTables();
+        
+        deleteCityMenu.addKeyListener(this);
     }
     
     public void initializeButtons(){
@@ -87,8 +88,33 @@ public class DeleteCityMenu extends JFrame implements ActionListener{
             City.importCities();
         }
     }
+    
+    public void keyPressed(KeyEvent e) {
+        int key = e.getKeyCode();
+
+        if(key == KeyEvent.VK_DELETE){
+            confirmDeletion();
+            System.out.println("delete pressed");
+        }
+    }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void keyTyped(KeyEvent e) {
+        int key = e.getKeyCode();
+
+        if(key == KeyEvent.VK_DELETE){
+            confirmDeletion();
+            System.out.println("delete pressed");
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        int key = e.getKeyCode();
+
+        if(key == KeyEvent.VK_DELETE){
+            confirmDeletion();
+            System.out.println("delete pressed");
+        }
     }
 }
